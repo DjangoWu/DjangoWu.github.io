@@ -4,6 +4,9 @@
     <title><![CDATA[post]]></title>
     <url>%2F2018%2F01%2F05%2Fpost%2F</url>
     <content type="text"><![CDATA[hello hexo next]]></content>
+      <categories>
+        <category>test</category>
+      </categories>
       <tags>
         <tag>test</tag>
       </tags>
