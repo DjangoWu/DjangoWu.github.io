@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[test my desktop blog]]></title>
+    <url>%2F2018%2F01%2F08%2Ftest-my-desktop-blog%2F</url>
+    <content type="text"><![CDATA[just test]]></content>
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[post]]></title>
     <url>%2F2018%2F01%2F05%2Fpost%2F</url>
     <content type="text"><![CDATA[hello hexo next]]></content>
