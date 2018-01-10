@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="John Wu, Hexo, NexT" />
+  <meta name="keywords" content="python," />
 
 
 
@@ -86,13 +86,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="静默无声">
-<meta property="og:url" content="http://johnwu.top/index.html">
+<meta name="description" content="&amp;emsp;&amp;emsp;对于python，PEP8引入了大多数项目遵循的风格指导。给出了一个高度可读，视觉友好的编码风格。下面是一些关键要点：   使用4空格缩进，而非TAB在小缩进(可以嵌套更深)和大缩进(更易读)之间，4空格是一个较好的折中。TAB引发了一些混乱，最好弃用。 折行以确保其不会超过79字符 这有助于小显示器用户阅读，也可以让大显示器能并排显示几个代码文件 使用空行分隔函数和类，以">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python编码风格">
+<meta property="og:url" content="http://johnwu.top/2018/01/10/python编码风格/index.html">
 <meta property="og:site_name" content="静默无声">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;对于python，PEP8引入了大多数项目遵循的风格指导。给出了一个高度可读，视觉友好的编码风格。下面是一些关键要点：   使用4空格缩进，而非TAB在小缩进(可以嵌套更深)和大缩进(更易读)之间，4空格是一个较好的折中。TAB引发了一些混乱，最好弃用。 折行以确保其不会超过79字符 这有助于小显示器用户阅读，也可以让大显示器能并排显示几个代码文件 使用空行分隔函数和类，以">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-10T11:45:04.380Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="静默无声">
+<meta name="twitter:title" content="python编码风格">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;对于python，PEP8引入了大多数项目遵循的风格指导。给出了一个高度可读，视觉友好的编码风格。下面是一些关键要点：   使用4空格缩进，而非TAB在小缩进(可以嵌套更深)和大缩进(更易读)之间，4空格是一个较好的折中。TAB引发了一些混乱，最好弃用。 折行以确保其不会超过79字符 这有助于小显示器用户阅读，也可以让大显示器能并排显示几个代码文件 使用空行分隔函数和类，以">
 
 
 
@@ -122,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://johnwu.top/"/>
+  <link rel="canonical" href="http://johnwu.top/2018/01/10/python编码风格/"/>
 
 
 
 
 
-  <title>静默无声</title>
+  <title>python编码风格 | 静默无声</title>
   
 
 
@@ -147,8 +152,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -285,9 +289,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -317,9 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/10/python编码风格/" itemprop="url">python编码风格</a></h1>
+          <h1 class="post-title" itemprop="name headline">python编码风格</h1>
         
 
         <div class="post-meta">
@@ -445,22 +447,21 @@
       
 
       
-        
-          
-          &emsp;&emsp;对于python，PEP8引入了大多数项目遵循的风格指导。给出了一个高度可读，视觉友好的编码风格。下面是一些关键要点：
+        <p>&emsp;&emsp;对于python，<a href="https://www.python.org/dev/peps/pep-0008/" target="_blank" rel="noopener">PEP8</a>引入了大多数项目遵循的风格指导。给出了一个高度可读，视觉友好的编码风格。下面是一些关键要点：</p>
+<blockquote>
+<ul>
+<li>使用4空格缩进，而非TAB<br>在小缩进(可以嵌套更深)和大缩进(更易读)之间，4空格是一个较好的折中。TAB引发了一些混乱，最好弃用。</li>
+<li>折行以确保其不会超过79字符<br> 这有助于小显示器用户阅读，也可以让大显示器能并排显示几个代码文件</li>
+<li>使用空行分隔函数和类，以及函数中的大块代码</li>
+<li>可能的话，注释独占一行</li>
+<li>使用文档字符串</li>
+<li>把空格放到操作符两边，以及逗号后边，但是括号里侧不加空格：<code>a = f(1, 2) + g(3, 4)</code></li>
+<li>同一函数和类命名<br> 推荐类名用<strong>驼峰命名</strong>函数和方法名用<strong>小写_和_下划线</strong> 。总是用self作为方法的第一个参数</li>
+<li>不要使用花哨的编码，如果你的代码的目的是要在国际化环境。Python的默认情况下，UTF-8，甚至普通的ASCII总是工作的最好</li>
+<li>同样，也不要使用非ASCII字符的标识符，除非是不同语种的会阅读或者维护代码</li>
+</ul>
+</blockquote>
 
-
-使用4空格缩进，而非TAB在小缩进(可以嵌套更深)和大缩进(更易读)之间，4空格是一个较好的折中。TAB引发了一些混乱，最好弃用。
-折行以确保其不会超过
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/10/python编码风格/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
       
     </div>
     
@@ -470,433 +471,88 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
 
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="John Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="John Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    John Wu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://johnwu.top/2018/01/10/python编码风格/" title="python编码风格">http://johnwu.top/2018/01/10/python编码风格/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
     
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwu.top/2018/01/10/win必备工具/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="静默无声">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/10/win必备工具/" itemprop="url">win必备工具</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T15:41:58+08:00">
-                2018-01-10
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-10T16:42:48+08:00">
-                2018-01-10
-              </time>
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/软件/" itemprop="url" rel="index">
-                    <span itemprop="name">软件</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
           
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/10/win必备工具/" class="leancloud_visitors" data-flag-title="win必备工具">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  155
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          1.Sublime Text&emsp;&emsp;下载地址：Sublime Text&emsp;&emsp;参考博客
-
-最爱的一款文本编辑器，可安装多种插件
-
-2.Cmder&emsp;&emsp;下载地址：Cmder&emsp;&emsp;参考博客
-
-比windows原生cmd好出了天际，支持P
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/10/win必备工具/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/10/win必备工具/" rel="next" title="win必备工具">
+                <i class="fa fa-chevron-left"></i> win必备工具
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwu.top/2018/01/05/Hexo-Next配置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="静默无声">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/05/Hexo-Next配置/" itemprop="url">Hexo-Next配置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T21:08:10+08:00">
-                2018-01-05
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-10T19:45:50+08:00">
-                2018-01-10
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网站/" itemprop="url" rel="index">
-                    <span itemprop="name">网站</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/05/Hexo-Next配置/" class="leancloud_visitors" data-flag-title="Hexo-Next配置">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,877
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  9
-                </span>
-              
-            </div>
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          1. 添加[关于][标签]等页面
-hexo new page about
-hexo new page tags
-
-2.头像设置&emsp;&emsp;修改站点配置文件，修改avatar,值设置成头像的链接或者地址1234# Sidebar Avatar# in theme directory(sou
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/05/Hexo-Next配置/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -906,215 +562,11 @@ hexo new page tags
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwu.top/2018/01/04/假面饭店/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Wu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="静默无声">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/04/假面饭店/" itemprop="url">假面饭店</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T16:15:47+08:00">
-                2018-01-04
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-08T20:55:13+08:00">
-                2018-01-08
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/书籍/" itemprop="url" rel="index">
-                    <span itemprop="name">书籍</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/04/假面饭店/" class="leancloud_visitors" data-flag-title="假面饭店">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  344
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-饭店人员一边想象着客人的本来面目，一边还必须要尊重他们的假面具，决不能试图摘下来。因为某种程度上，客人是为了享受面具舞会才来的饭店。
-
-&emsp;&emsp;这本书和他之前的作品一样，阅读过程十分顺畅，多少有点欲罢不能。故事结构完整，情节设计精巧，但是推理节奏较为拖沓；最终决战到来之前的风雨欲来
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/04/假面饭店/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -1122,6 +574,15 @@ hexo new page tags
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjk3Mi85NTM0"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -1363,6 +824,10 @@ hexo new page tags
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -1391,6 +856,17 @@ hexo new page tags
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
