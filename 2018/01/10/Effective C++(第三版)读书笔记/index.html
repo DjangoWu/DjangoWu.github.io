@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="静默无声">
 <meta property="og:description" content="1. 让自己习惯C++(Accustoming Yourself to C++)条款01：视C++为一个语言联邦(View C++ as a federation of languages)  C。C++以C为基础。区块(blocks)、语句(statements)、预处理器(preprocessor)、内置数据类型(built-in data types)、数组(arrays)、指针(point">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-19T09:22:59.031Z">
+<meta property="og:updated_time" content="2018-01-29T08:16:29.986Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective C++(第三版)读书笔记">
 <meta name="twitter:description" content="1. 让自己习惯C++(Accustoming Yourself to C++)条款01：视C++为一个语言联邦(View C++ as a federation of languages)  C。C++以C为基础。区块(blocks)、语句(statements)、预处理器(preprocessor)、内置数据类型(built-in data types)、数组(arrays)、指针(point">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-19T17:22:59+08:00">
-                2018-01-19
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-29T16:16:29+08:00">
+                2018-01-29
               </time>
             
           </span>
@@ -410,7 +410,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,762
+                  9,391
                 </span>
               
 
@@ -426,7 +426,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7
+                  36
                 </span>
               
             </div>
@@ -488,34 +488,401 @@
 <p>为驳回编译器自动(暗自)提供的机能，可将相应的成员函数声明为private并且不予实现。使用Uncopyable这样的base class也是一种做法。</p>
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Solution 1：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeForSale</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	...</span><br><span class="line">	HomeForSale(<span class="keyword">const</span> HomeForSale&amp;);			<span class="comment">// 只有声明</span></span><br><span class="line">	HomeForSale&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> HomeForSale&amp;);	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Solution 2:</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Uncopyable</span> &#123;</span>								<span class="comment">// 允许derived对象构造和析构</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	Uncopyable() &#123;&#125;</span><br><span class="line">	~Uncopyable() &#123;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Uncopyable(<span class="keyword">const</span> Uncopyable&amp;)；				<span class="comment">// 但阻止copying</span></span><br><span class="line">	Uncopyable&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Uncopyable&amp;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 为求阻止HomeForSale对象被拷贝，唯一需要做的是继承Uncopyable:</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeForSale</span>:</span> <span class="keyword">private</span> Uncopyable &#123;		<span class="comment">// class 不在声明</span></span><br><span class="line">	...										<span class="comment">// copy构造函数或</span></span><br><span class="line">&#125;;											<span class="comment">// copy assign 操作符</span></span><br></pre></td></tr></table></figure>
-<h3 id="07-为多态基类声明virtual析构函数-Declare-destructors-virtual-in-polymorphic-base-classes"><a href="#07-为多态基类声明virtual析构函数-Declare-destructors-virtual-in-polymorphic-base-classes" class="headerlink" title="07. 为多态基类声明virtual析构函数(Declare destructors virtual in polymorphic base classes.)"></a>07. 为多态基类声明virtual析构函数(Declare destructors virtual in polymorphic base classes.)</h3><p>&emsp;&emsp;(多态性质情况下)为防止出现“局部销毁”对象，造成资源泄露等结果，需要给base class一个virtual析构函数。伺候删除derived class对象就会销毁整个对象，包括derived class成分：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TimeKeeper</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	TimeKeeper();</span><br><span class="line">	<span class="keyword">virtual</span> ~TimeKeeper();</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line">TimeKeeper* ptk = getTimeKeeper();</span><br><span class="line">...</span><br><span class="line"><span class="keyword">delete</span> ptk;							<span class="comment">// 现在，行为正确</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="条款07-为多态基类声明virtual析构函数-Declare-destructors-virtual-in-polymorphic-base-classes"><a href="#条款07-为多态基类声明virtual析构函数-Declare-destructors-virtual-in-polymorphic-base-classes" class="headerlink" title="条款07. 为多态基类声明virtual析构函数(Declare destructors virtual in polymorphic base classes.)"></a>条款07. 为多态基类声明virtual析构函数(Declare destructors virtual in polymorphic base classes.)</h3><p>&emsp;&emsp;(多态性质情况下)为防止出现“局部销毁”对象，造成资源泄露等结果，需要给base class一个virtual析构函数。伺候删除derived class对象就会销毁整个对象，包括derived class成分：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TimeKeeper</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	TimeKeeper();</span><br><span class="line">	<span class="keyword">virtual</span> ~TimeKeeper();</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line">TimeKeeper* ptk = getTimeKeeper();</span><br><span class="line">...</span><br><span class="line"><span class="keyword">delete</span> ptk;							<span class="comment">// 现在，行为正确</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>如果class不含virtual函数，通常表示它并不意图被用做一个base class。<br>许多人的心得是：只有当class内含至少一个virtual函数，才为它声明virtual析构函数。</p>
 </blockquote>
-<h3 id="08-别让异常逃离析构函数-Prevent-exceptions-from-leaving-destructors"><a href="#08-别让异常逃离析构函数-Prevent-exceptions-from-leaving-destructors" class="headerlink" title="08. 别让异常逃离析构函数(Prevent exceptions from leaving destructors)"></a>08. 别让异常逃离析构函数(Prevent exceptions from leaving destructors)</h3><blockquote>
+<h3 id="条款08-别让异常逃离析构函数-Prevent-exceptions-from-leaving-destructors"><a href="#条款08-别让异常逃离析构函数-Prevent-exceptions-from-leaving-destructors" class="headerlink" title="条款08. 别让异常逃离析构函数(Prevent exceptions from leaving destructors)"></a>条款08. 别让异常逃离析构函数(Prevent exceptions from leaving destructors)</h3><blockquote>
 <ul>
 <li>析构函数绝对不要吐出异常。如果一个被析构函数调用的函数可能抛出异常，析构函数应该捕捉任何异常，然后吞下他们(不传播)或结束程序。</li>
-<li>如果客户需要对某个操作函数运行期间抛出的异常做出反应，那么class应该提供一个普通函数(而非在析构函数中)执行哎操作。</li>
+<li>如果客户需要对某个操作函数运行期间抛出的异常做出反应，那么class应该提供一个普通函数(而非在析构函数中)执行该操作。</li>
 </ul>
 </blockquote>
-<h3 id="09-绝不在构造和析构过程中调用virtual函数-Never-call-virtual-functions-during-construction-or-destruction"><a href="#09-绝不在构造和析构过程中调用virtual函数-Never-call-virtual-functions-during-construction-or-destruction" class="headerlink" title="09. 绝不在构造和析构过程中调用virtual函数(Never call virtual functions during construction or destruction.)"></a>09. 绝不在构造和析构过程中调用virtual函数(Never call virtual functions during construction or destruction.)</h3><blockquote>
+<h3 id="条款09-绝不在构造和析构过程中调用virtual函数-Never-call-virtual-functions-during-construction-or-destruction"><a href="#条款09-绝不在构造和析构过程中调用virtual函数-Never-call-virtual-functions-during-construction-or-destruction" class="headerlink" title="条款09. 绝不在构造和析构过程中调用virtual函数(Never call virtual functions during construction or destruction.)"></a>条款09. 绝不在构造和析构过程中调用virtual函数(Never call virtual functions during construction or destruction.)</h3><blockquote>
 <ul>
 <li>在构造和析构期间不要调用virtual函数，因为这类调用从不下降至derived class(比起当前执行构造函数和析构函数的那层)。</li>
 </ul>
 </blockquote>
-<h3 id="10-令operator-返回一个reference-to-this-Have-assigment-operators-return-a-reference-to-this"><a href="#10-令operator-返回一个reference-to-this-Have-assigment-operators-return-a-reference-to-this" class="headerlink" title="10. 令operator= 返回一个reference to *this(Have assigment operators return a reference to *this.)"></a>10. 令operator= 返回一个reference to *this(Have assigment operators return a reference to *this.)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Widget&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">	&#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="keyword">return</span>* <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="条款10-令operator-返回一个reference-to-this-Have-assigment-operators-return-a-reference-to-this"><a href="#条款10-令operator-返回一个reference-to-this-Have-assigment-operators-return-a-reference-to-this" class="headerlink" title="条款10. 令operator= 返回一个reference to *this(Have assigment operators return a reference to *this.)"></a>条款10. 令operator= 返回一个reference to *this(Have assigment operators return a reference to *this.)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Widget&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">	&#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="keyword">return</span>* <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;注意，这只是个协议，并无强制性。</p>
-<h3 id="11-在operator-中处理“自我赋值”-Handle-assignment-to-self-in-operator"><a href="#11-在operator-中处理“自我赋值”-Handle-assignment-to-self-in-operator" class="headerlink" title="11. 在operator= 中处理“自我赋值”(Handle assignment to self in operator=.)"></a>11. 在operator= 中处理“自我赋值”(Handle assignment to self in operator=.)</h3><blockquote>
+<h3 id="条款11-在operator-中处理“自我赋值”-Handle-assignment-to-self-in-operator"><a href="#条款11-在operator-中处理“自我赋值”-Handle-assignment-to-self-in-operator" class="headerlink" title="条款11. 在operator= 中处理“自我赋值”(Handle assignment to self in operator=.)"></a>条款11. 在operator= 中处理“自我赋值”(Handle assignment to self in operator=.)</h3><blockquote>
 <ul>
 <li>确保当对象自我赋值时operator= 有良好行为。其中技术包括比较“来源对象”和“目标对象”的地址、精心周到的语句顺序、以及copy-and-swap。</li>
 <li>确定任何函数如果操作一个以上的对象，而其中多个对象是同一个对象时，其行为仍然正确。</li>
 </ul>
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bitmap</span> &#123;</span>...&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1.比较(证同测试)</span></span><br><span class="line">Widget&amp; Widget::<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span> == &amp;rhs) <span class="keyword">return</span> *<span class="keyword">this</span>;		<span class="comment">// 证同测试</span></span><br><span class="line">										<span class="comment">// 如果是自我赋值，就不做任何事</span></span><br><span class="line">    <span class="keyword">delete</span> pb;</span><br><span class="line">    pb = <span class="keyword">new</span> Bitmap(*rhs.pb);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 2.语句顺序</span></span><br><span class="line">Widget&amp; Widget::<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">	Bitmap* pOrig = pb;			<span class="comment">// 记住原先的pb</span></span><br><span class="line">	pb = <span class="keyword">new</span> Bitmap(*rhs.pb);	<span class="comment">// 令pb指向*pb的一个复件(副本)</span></span><br><span class="line">	<span class="keyword">delete</span> pOrig;				<span class="comment">// 删除原先的pb</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3.copy-and-swap</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Widget&amp; rhs)</span></span>;			<span class="comment">//交换*this和rhs的数据;</span></span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line">Widget&amp; Widget::<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">	Widget temp(rhs);				<span class="comment">// 将*this数据和上述复件的数据交换</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="12-复制对象时勿忘其每一个成分-Copy-all-parts-of-an-object"><a href="#12-复制对象时勿忘其每一个成分-Copy-all-parts-of-an-object" class="headerlink" title="12. 复制对象时勿忘其每一个成分(Copy all parts of an object.)"></a>12. 复制对象时勿忘其每一个成分(Copy all parts of an object.)</h3><hr>
+<h3 id="条款12-复制对象时勿忘其每一个成分-Copy-all-parts-of-an-object"><a href="#条款12-复制对象时勿忘其每一个成分-Copy-all-parts-of-an-object" class="headerlink" title="条款12. 复制对象时勿忘其每一个成分(Copy all parts of an object.)"></a>条款12. 复制对象时勿忘其每一个成分(Copy all parts of an object.)</h3><p>&emsp;&emsp;设计良好之面向对象系统(OO-system)会将对象的内部封装起来，只留两个函数负责对象拷贝(复制)，就是copy构造函数和copy assignment操作符(即为copying函数)。<br>&emsp;&emsp;任何时候只要你承担起“为derived class撰写copying函数”的重责大任，必须很小心地也复制器base class成分。那些成分往往是private，所以无法直接访问它们，你应该让derived class的copying函数调用相应的base class函数。</p>
 <blockquote>
-<p><strong>未完待续</strong></p>
+<ul>
+<li>Copying函数应该确保复制“对象内的所有成员变量”及“所有base class成分”。</li>
+<li>不要尝试某个copying函数实现另一个copying函数。应该将共同机能放进第三个函数中(如init函数)，并由两个copying函数共同调用。</li>
+</ul>
 </blockquote>
+<hr>
+<h2 id="3-资源管理-Resource-Management"><a href="#3-资源管理-Resource-Management" class="headerlink" title="3.资源管理(Resource Management)"></a>3.资源管理(Resource Management)</h2><blockquote>
+<p>内存只是必须管理的众多资源之一，其他常见的资源还包括文件描述器(file descriptors)、互斥锁(mutex locks)、图形界面中的字型和笔刷、数据库连接、以及网络sockets。</p>
+</blockquote>
+<h3 id="条款13-以对象管理资源-Use-objects-to-manage-resources"><a href="#条款13-以对象管理资源-Use-objects-to-manage-resources" class="headerlink" title="条款13. 以对象管理资源(Use objects to manage resources.)"></a>条款13. 以对象管理资源(Use objects to manage resources.)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">auto_ptr</span>&lt;Investment&gt; pInv(createInvestment( ));</span><br><span class="line">										<span class="comment">// 调用factory函数</span></span><br><span class="line">    ...									<span class="comment">// 一如既往地使用pInv</span></span><br><span class="line">&#125;										<span class="comment">// 经由auto_ptr的析构甘薯自动删除pInv</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这个简单例子示范了“以对象管理资源”的两个关键想法：</p>
+<ul>
+<li>获得资源后立刻放进管理对象内。以上代码中createInvestment返回的资源被当作其管理者auto_ptr的初值。实际上“以对象管理资源”的观念常备称为“资源取得时机便是初始化时机”(Resource Acquisition Is Initialization;<strong>RAII</strong>)。</li>
+<li>管理对象运用析构函数确保资源被释放。</li>
+</ul>
+<p>&emsp;&emsp;注意auto_ptrs有一个性质：若通过copy构造函数或copy assignment操作符复制它们，它们会变成null，而复制所得的指针将取得资源的唯一拥有权！<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">auto_ptr</span>&lt;Investment&gt; pInv1(createInvestment( ));			<span class="comment">// pInv1指向createInvestment返回物</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">auto_ptr</span>&lt;Investment&gt; pInv2(pInv1);							<span class="comment">// 现在pInv2指向对象，pInv1被设为null</span></span><br><span class="line">pInv1 = pInv2;													<span class="comment">// pInv2被设为null</span></span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;使用tr1::shared_ptrs比auto_ptrs的复制正常一些。</p>
+<blockquote>
+<ul>
+<li>为防止资源泄露，清使用RAII对象，它们在构造函数中获得资源并在析构函数中释放资源。</li>
+<li>两个常备使用的RAII classes分别是tr1::shared_ptr和auto_ptr。前者通常是较佳选择，因为其copy行为比较直观。若选择auto_ptr，复制动作会使它(被复制物)指向null。</li>
+</ul>
+</blockquote>
+<h3 id="条款14-在资源管理类中小心copying行为-Think-carefully-behavior-in-resource-managing-classes"><a href="#条款14-在资源管理类中小心copying行为-Think-carefully-behavior-in-resource-managing-classes" class="headerlink" title="条款14. 在资源管理类中小心copying行为(Think carefully behavior in resource-managing classes.)"></a>条款14. 在资源管理类中小心copying行为(Think carefully behavior in resource-managing classes.)</h3><p>&emsp;&emsp;RAII守则“资源在构造期间获得，在析构期间释放”。</p>
+<blockquote>
+<ul>
+<li>复制RAII对象必须一并复制它所管理的资源，所以资源的copying行为决定RAII对象的copying行为。</li>
+<li>普遍而常见的RAII class copying行为是：抑制copying、施行引用计数法(reference counting)。不过其他行为也都可能被实现。</li>
+</ul>
+</blockquote>
+<h3 id="条款15-在资源管理类中提供对原始资源的访问-Provide-access-to-raw-resources-in-resource-managing-classes"><a href="#条款15-在资源管理类中提供对原始资源的访问-Provide-access-to-raw-resources-in-resource-managing-classes" class="headerlink" title="条款15. 在资源管理类中提供对原始资源的访问(Provide access to raw resources in resource-managing classes.)"></a>条款15. 在资源管理类中提供对原始资源的访问(Provide access to raw resources in resource-managing classes.)</h3><blockquote>
+<ul>
+<li>APIs往往要求访问原始资源(raw resources)，所以每一个RAII class应该提供一个“取得其所管理之资源”的办法。</li>
+<li>对原始资源的访问可能经由显式转换或者隐式转换。一般而言显式转换比较安全，但隐式转换对客户比较方便。</li>
+</ul>
+</blockquote>
+<h3 id="条款16-成对使用new和delete时要采取相同形式-Use-the-same-form-in-corresponding-uses-of-new-and-delete"><a href="#条款16-成对使用new和delete时要采取相同形式-Use-the-same-form-in-corresponding-uses-of-new-and-delete" class="headerlink" title="条款16. 成对使用new和delete时要采取相同形式(Use the same form in corresponding uses of new and delete)"></a>条款16. 成对使用new和delete时要采取相同形式(Use the same form in corresponding uses of new and delete)</h3><blockquote>
+<ul>
+<li>如果你在new表达式中使用[]，必须在相应的delete表达式中也使用[]。如果你在new表达式中不使用[]，一定不要在相应的delete表达式中使用[]。</li>
+</ul>
+</blockquote>
+<h3 id="条款17-以独立语句将newed对象置入智能指针-Store-newed-objects-in-smart-pointers-in-standalone-statements"><a href="#条款17-以独立语句将newed对象置入智能指针-Store-newed-objects-in-smart-pointers-in-standalone-statements" class="headerlink" title="条款17. 以独立语句将newed对象置入智能指针(Store newed objects in smart pointers in standalone statements.)"></a>条款17. 以独立语句将newed对象置入智能指针(Store newed objects in smart pointers in standalone statements.)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::tr1::<span class="built_in">shared_ptr</span>&lt;Widget&gt; pw(<span class="keyword">new</span> Widget);	<span class="comment">// 在单独语句内以只能指针存储newed所得对象</span></span><br><span class="line">processWidget(pw, priority());					<span class="comment">// 这个调用动作决不至于造成泄露</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>以独立语句将newed对象存储于(置入)智能指针中。如果不这样做，一旦异常被抛出，有可能导致难以察觉的资源泄露。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="4-设计与声明-Designs-and-Declarations"><a href="#4-设计与声明-Designs-and-Declarations" class="headerlink" title="4. 设计与声明(Designs and Declarations)"></a>4. 设计与声明(Designs and Declarations)</h2><blockquote>
+<p>让接口容易被正确使用，不容易被误用(正确性、高效性、封装性、维护性、延展性、以及协议的一致性)。</p>
+</blockquote>
+<h3 id="条款18-让接口容易被正确使用，不易被误用-Make-interfaces-easy-to-use-correctly-and-hard-to-use-incorrectly"><a href="#条款18-让接口容易被正确使用，不易被误用-Make-interfaces-easy-to-use-correctly-and-hard-to-use-incorrectly" class="headerlink" title="条款18. 让接口容易被正确使用，不易被误用(Make interfaces easy to use correctly and hard to use incorrectly.)"></a>条款18. 让接口容易被正确使用，不易被误用(Make interfaces easy to use correctly and hard to use incorrectly.)</h3><blockquote>
+<ul>
+<li>好的接口很容易被正确使用，不容易被误用。你应该在你的所有接口中努力达成这些性质。</li>
+<li>“促进正确使用”的办法包括接口的一致性，以及与内置类型的行为兼容。</li>
+<li>“阻止误用”的方法包括建立新类型、限制类型上的操作、束缚对象值、以及消除客户的资源管理责任。</li>
+<li>tr1::shared_ptr支持定制型删除器(custom deleter)。这可防范DLL问题，可被用来自动解除互斥锁等等。</li>
+</ul>
+</blockquote>
+<h3 id="条款19-设计class犹如设计type-Treat-class-design-as-type-design"><a href="#条款19-设计class犹如设计type-Treat-class-design-as-type-design" class="headerlink" title="条款19. 设计class犹如设计type(Treat class design as type design)"></a>条款19. 设计class犹如设计type(Treat class design as type design)</h3><blockquote>
+<ol>
+<li>新type的对象应该如何被创建和销毁？</li>
+<li>对象的初始化和对象的赋值该有什么样的差别？</li>
+<li>新type的对象如果被passed by value，意味着什么？</li>
+<li>什么是新type的“合法值”？</li>
+<li>你的新type需要配合某个继承图系(inheritance graph)吗？</li>
+<li>你的新type需要什么样的转换？</li>
+<li>什么样的操作符和函数对此新type而言是合理的？</li>
+<li>什么样的标准函数应该驳回？</li>
+<li>谁该取用新type的成员？</li>
+<li>什么是新type的“未声明接口”(undeclared interface)？</li>
+<li>你的新type有多么一般化？</li>
+<li>你真的需要一个新type吗？</li>
+</ol>
+</blockquote>
+<h3 id="条款20-宁以pass-by-reference-to-const替换pass-by-value"><a href="#条款20-宁以pass-by-reference-to-const替换pass-by-value" class="headerlink" title="条款20. 宁以pass-by-reference-to-const替换pass-by-value"></a>条款20. 宁以pass-by-reference-to-const替换pass-by-value</h3><p>&emsp;&emsp;缺省情况下C++以by value方式传递对象至函数。</p>
+<blockquote>
+<ul>
+<li>尽量以pass-by-reference-to-const替换pass-by-value。前者通常比较高效，并可避免切割问题(slicing problem)。</li>
+<li>以上规则并不适用于内置类型，以及STL的迭代器和函数对象。对它们而言，pass-by-value往往比较适当。</li>
+</ul>
+</blockquote>
+<h3 id="条款21-必须返回对象时，别妄想返回其reference-Don’t-try-to-return-a-reference-when-you-must-return-an-object"><a href="#条款21-必须返回对象时，别妄想返回其reference-Don’t-try-to-return-a-reference-when-you-must-return-an-object" class="headerlink" title="条款21. 必须返回对象时，别妄想返回其reference(Don’t try to return a reference when you must return an object.)"></a>条款21. 必须返回对象时，别妄想返回其reference(Don’t try to return a reference when you must return an object.)</h3><p>&emsp;&emsp;一个“必须返回新对象”的函数的正确写法是让其返回一个新对象。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">const</span> Rational <span class="keyword">operator</span> * (<span class="keyword">const</span> Rational&amp; lhs, <span class="keyword">const</span> Rational&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> Rational(lhs.n * rhs.n, lhs.d * rhs.d);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<ul>
+<li>绝不要返回pointer或reference指向一个local stack对象，或返回reference指向一个heap-allocated对象，或返回pointer或reference指向一个local static对象而有可能同时需要多个这样的对象。</li>
+</ul>
+</blockquote>
+<h3 id="条款22-将成员变量声明为private-Declare-data-members-private"><a href="#条款22-将成员变量声明为private-Declare-data-members-private" class="headerlink" title="条款22. 将成员变量声明为private(Declare data members private.)"></a>条款22. 将成员变量声明为private(Declare data members private.)</h3><blockquote>
+<ul>
+<li>切记将成员变量声明为private。这可赋予客户访问数据的一致性、可细微划分访问控制、允诺约束条件获得保证，并提供class作者以充分的实现弹性。</li>
+<li>protected并不比public更具封装性。</li>
+</ul>
+</blockquote>
+<h3 id="条款23-宁以non-member、non-friend替换member函数"><a href="#条款23-宁以non-member、non-friend替换member函数" class="headerlink" title="条款23. 宁以non-member、non-friend替换member函数"></a>条款23. 宁以non-member、non-friend替换member函数</h3><blockquote>
+<ul>
+<li>宁可拿non-member non-friend函数替换member函数。这样做可以增加封装性、包裹弹性(packaging flexibility)和机能扩充性。</li>
+</ul>
+</blockquote>
+<h3 id="条款24-若所有参数皆需类型转换，请为此采用non-member函数-Declare-non-member-functions-when-type-conversions-should-apply-to-all-parameters"><a href="#条款24-若所有参数皆需类型转换，请为此采用non-member函数-Declare-non-member-functions-when-type-conversions-should-apply-to-all-parameters" class="headerlink" title="条款24. 若所有参数皆需类型转换，请为此采用non-member函数(Declare non-member functions when type conversions should apply to all parameters.)"></a>条款24. 若所有参数皆需类型转换，请为此采用non-member函数(Declare non-member functions when type conversions should apply to all parameters.)</h3><blockquote>
+<ul>
+<li>如果你需要为某个函数的所有参数(包括被this指针所指的那个隐喻参数)进行类型转换，那么这个函数必须是non-member。</li>
+</ul>
+</blockquote>
+<h3 id="条款25-考虑写出一个不抛出异常的swap函数-Consider-support-for-a-non-throwing-swap"><a href="#条款25-考虑写出一个不抛出异常的swap函数-Consider-support-for-a-non-throwing-swap" class="headerlink" title="条款25. 考虑写出一个不抛出异常的swap函数(Consider support for a non-throwing swap.)"></a>条款25. 考虑写出一个不抛出异常的swap函数(Consider support for a non-throwing swap.)</h3><blockquote>
+<ul>
+<li>当std::swap对你的类型效率不高时，提供一个swap成员函数，并确定这个函数不抛出异常。</li>
+<li>如果你提供一个member swap，特该提供一个non-member swap用来调用前者。对于classes(而非templates)，也请特化std::swap。</li>
+<li>调用swap时应针对std::swap使用using声明式，然后调用swap并且不带任何“命名空间资格修饰”。</li>
+<li>为“用户定义类型”进行std templates全特化是最好的，但千万不要尝试在std内加入某些对std而言全新的东西。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="5-实现-Implementations"><a href="#5-实现-Implementations" class="headerlink" title="5. 实现(Implementations)"></a>5. 实现(Implementations)</h2><p>&emsp;&emsp;太快定义变量可能造成效率上的拖延；过渡使用转型(casts)可能导致代码变慢又难维护，又找来微妙难解的错误；返回对象“内部数据之号码牌(handles)”可能会破坏封装并留给客户虚吊号码牌(danling handles)；未考虑异常带来的冲击则可能导致资源泄露和数据败坏；过渡热心地inlining可能引起代码膨胀；过渡耦合(coupling)则可能导致让人不满意的冗长建置时间(build times)。</p>
+<h3 id="条款26-尽可能延后变量定义式的出现时间-Postpone-variable-definitions-as-long-as-possible"><a href="#条款26-尽可能延后变量定义式的出现时间-Postpone-variable-definitions-as-long-as-possible" class="headerlink" title="条款26. 尽可能延后变量定义式的出现时间(Postpone variable definitions as long as possible.)"></a>条款26. 尽可能延后变量定义式的出现时间(Postpone variable definitions as long as possible.)</h3><p>&emsp;&emsp;不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这份定义直到能够给它初始实参为止。如果这样，不仅能够避免构造(和析构)非必要对象，还可以避免无意义的default构造行为。</p>
+<h3 id="条款27-尽量少做转型动作-Minimize-casting"><a href="#条款27-尽量少做转型动作-Minimize-casting" class="headerlink" title="条款27. 尽量少做转型动作(Minimize casting.)"></a>条款27. 尽量少做转型动作(Minimize casting.)</h3><p>&emsp;&emsp;C++提供了四种新式转型(new-style/C++-style casts)<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 旧式 old-style casts</span></span><br><span class="line">(T)expression		<span class="comment">//将expression转型为T</span></span><br><span class="line">T(expression)		<span class="comment">//~</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// new-style</span></span><br><span class="line"><span class="keyword">const_cast</span>&lt;T&gt;( expression )</span><br><span class="line"><span class="keyword">dynamic_cast</span>&lt;T&gt;( expression )</span><br><span class="line"><span class="keyword">reinterpret_cast</span>&lt;T&gt;( expression )</span><br><span class="line"><span class="keyword">static_cast</span>&lt;T&gt;( expression )</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;各有不同的目的：</p>
+<ul>
+<li>const_cast通常被用来将对象的常量性移除(cast away the constness)。也是唯一有此能力的 C++-style转型操作符。</li>
+<li>dynamic_cast主要用来执行“安全向下转型”(safe downcasting)，也就是用来决定某对象是否归属继承体系中的某个类型。它是唯一无法由旧式语法执行的动作，也是唯一可能耗费重大运行成本的转型动作。</li>
+<li>reinterpret_cast意图执行低级转型，实际动作及结果可能取决于编译器，也就是说它不可移植。</li>
+<li>static_cast用来强迫隐式转换(implicit conversions)，例如将non-const对象转为const对象等。它也可以用来执行上述多种转换的反向转换，但无法将const转为non-const。</li>
+</ul>
+<blockquote>
+<ul>
+<li>如果可以，尽量避免转型，特别是在注重效率的代码中避免dynamic_cast。如果有个设计需要转型动作，试着发展无需转型的替代设计。</li>
+<li>如果转型是必要的，试着将它隐藏于某个函数背后。客户随后可以调用该函数，而不需将转型放进他们自己的代码内。</li>
+<li>宁可使用C++-style(新式)转型，不要使用旧式转型。前者很容易辨识出来，而且也比较有着分门别类的德州的执掌。</li>
+</ul>
+</blockquote>
+<h3 id="条款28-避免返回handles指向对象内部成分-Avoid-returning-“handles”-to-object-internals"><a href="#条款28-避免返回handles指向对象内部成分-Avoid-returning-“handles”-to-object-internals" class="headerlink" title="条款28. 避免返回handles指向对象内部成分(Avoid returning “handles” to object internals.)"></a>条款28. 避免返回handles指向对象内部成分(Avoid returning “handles” to object internals.)</h3><ol>
+<li>成员变量的封装性最多只能等于“返回其reference”的函数的访问级别。</li>
+<li>如果const成员函数传出一个reference，后者所指数据与对象自身有关联，而它又被存储于对象之外，那么这个函数的调用者可以修改那笔数据。<br>&emsp;&emsp;如果返回的是指针或迭代器，相同的情况还是发生，原因也相同。References、指针和迭代器都是所谓的<em>handles</em></li>
+</ol>
+<blockquote>
+<ul>
+<li>避免返回handles(包括references、指针、迭代器)指向对象内部。遵守这个条款可增加封装性，帮助const成员函数的行为像个const，并将发生“虚吊号码牌”(dangling handles)的可能性降至最低。</li>
+</ul>
+</blockquote>
+<h3 id="条款29-为“异常安全”而努力是值得的-Strive-for-exception-safe-code"><a href="#条款29-为“异常安全”而努力是值得的-Strive-for-exception-safe-code" class="headerlink" title="条款29. 为“异常安全”而努力是值得的(Strive for exception-safe code.)"></a>条款29. 为“异常安全”而努力是值得的(Strive for exception-safe code.)</h3><p>&emsp;&emsp;当异常被抛出时，带有异常安全性的函数会：</p>
+<ul>
+<li>不泄露任何资源</li>
+<li>不允许数据败坏</li>
+</ul>
+<p>&emsp;&emsp;异常安全函数(Exception-safe functions)提供以下三个保证之一：</p>
+<ul>
+<li><strong>基本承诺</strong>：如果异常被抛出，程序内的任何事物仍然保持在有效状态下。没有任何对象或数据结构会因此而败坏，任何对象都处于一种内部前后一致的状态(例如所有的class约束条件都继续获得满足)。</li>
+<li><strong>强烈保证</strong>：如果异常被抛出，程序状态不改变。调用这样的函数需有这样的认知：如果函数成功，就是完全成功，如果函数失败，程序会回复到“调用函数之前”的状态。</li>
+<li><strong>不抛掷(nothrow)保证</strong>：承诺绝不抛出异常，因为它们总能够完成它们原先承诺的功能。作用于内置类型(例如ints，指针等等)身上的所有操作都提供nothrow保证。</li>
+</ul>
+<blockquote>
+<ul>
+<li>异常安全函数(Exception-safe functions)即使发生异常也不会泄露资源或允许任何数据结构败坏。这样的函数区分为三种可能的保证：基本型、强烈型、不抛异常型。</li>
+<li>“强烈保证”往往能够以copy-and-swap实现出来，但“强烈保证”并非对所有函数都可实现或具备现实意义。</li>
+<li>函数提供的“异常安全保证”通常最高只等于其所调用之各个函数的“异常安全保证中的最弱者”。</li>
+</ul>
+</blockquote>
+<h3 id="条款30-透彻了解inlining的里里外外-Understand-the-ins-and-outs-of-inlining"><a href="#条款30-透彻了解inlining的里里外外-Understand-the-ins-and-outs-of-inlining" class="headerlink" title="条款30. 透彻了解inlining的里里外外(Understand the ins and outs of inlining.)"></a>条款30. 透彻了解inlining的里里外外(Understand the ins and outs of inlining.)</h3><p>&emsp;&emsp;<strong>80-20经验法则</strong>：平均而言一个程序往往将80%的执行时间花费在20%的代码上。</p>
+<blockquote>
+<ul>
+<li>将大多数inlining限制在小型、被频繁调用的函数身上。这可使日后的调试过程和二进制升级(binary upgradability)更容易，也可使潜在的代码膨胀问题最小化，使程序的速度提升机会最大化。</li>
+<li>不要只因为function templates出现在头文件，就将它们声明为inline。</li>
+</ul>
+</blockquote>
+<h3 id="条款31-将文件间的编译依存关系降至最低-Minimize-compilation-dependencies-between-files"><a href="#条款31-将文件间的编译依存关系降至最低-Minimize-compilation-dependencies-between-files" class="headerlink" title="条款31. 将文件间的编译依存关系降至最低(Minimize compilation dependencies between files.)"></a>条款31. 将文件间的编译依存关系降至最低(Minimize compilation dependencies between files.)</h3><p>&emsp;&emsp;编译依存性最小化的本质：显示中让头文件尽可能自我满足，万一做不到，则让它与其他文件内的声明式(而非定义式)相依：</p>
+<ul>
+<li>如果使用object references 或 object pointers可以完成任务，就不要使用objects。</li>
+<li>如果能够，尽量以class声明式替换class定义式。</li>
+<li>为声明式和定义式提供不同的头文件。</li>
+</ul>
+<blockquote>
+<ul>
+<li>支持“编译依存性最小化”的一般构想是：相依于声明式，不要相依于定义式。基于此构想的两个手段是Handle classes和Interface classes。</li>
+<li>程序库头文件应该以“完全且仅有声明式”(full and declaration-only forms)的形式存在。这种做法不论是否涉及templates都适用。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="6-继承与面向对象设计-Inheritance-and-Object-Oriented-Design"><a href="#6-继承与面向对象设计-Inheritance-and-Object-Oriented-Design" class="headerlink" title="6 继承与面向对象设计(Inheritance and Object-Oriented Design.)"></a>6 继承与面向对象设计(Inheritance and Object-Oriented Design.)</h2><h3 id="条款32-确定你的public继承塑模出is-a关系-Make-sure-public-inheritance-models-“is-a-”"><a href="#条款32-确定你的public继承塑模出is-a关系-Make-sure-public-inheritance-models-“is-a-”" class="headerlink" title="条款32. 确定你的public继承塑模出is-a关系(Make sure public inheritance models “is-a.”)"></a>条款32. 确定你的public继承塑模出is-a关系(Make sure public inheritance models “is-a.”)</h3><blockquote>
+<ul>
+<li>“public继承”以为<strong>is-a</strong>。适用于base classes身上的每一件事情一定也适用于derived classes身上，因为每一个derived class对象也都是一个base class对象。</li>
+</ul>
+</blockquote>
+<h3 id="条款33-避免遮掩继承而来的名称-Avoid-hiding-inherited-names"><a href="#条款33-避免遮掩继承而来的名称-Avoid-hiding-inherited-names" class="headerlink" title="条款33. 避免遮掩继承而来的名称(Avoid hiding inherited names.)"></a>条款33. 避免遮掩继承而来的名称(Avoid hiding inherited names.)</h3><blockquote>
+<ul>
+<li>derived classes内的名称会遮掩base classes内的名称。在public继承下从来没有人希望如此。</li>
+<li>为了让被遮掩的名称再见天日，可使用using声明式或转交函数(forwarding functions)。</li>
+</ul>
+</blockquote>
+<h3 id="条款34-区分接口继承和实现继承-Differentiate-between-inheritance-of-interface-and-inheritance-of-implementation"><a href="#条款34-区分接口继承和实现继承-Differentiate-between-inheritance-of-interface-and-inheritance-of-implementation" class="headerlink" title="条款34. 区分接口继承和实现继承(Differentiate between inheritance of interface and inheritance of implementation.)"></a>条款34. 区分接口继承和实现继承(Differentiate between inheritance of interface and inheritance of implementation.)</h3><p>&emsp;&emsp;pure virtual函数有两个最突出的特性：它们必须被任何“继承了它们”的具象class重新声明，而且它们在抽象class中通常没有定义。而impure virtual函数会提供一份实现代码，derived classes可能覆写(override)它。一个non-virtual成员函数所表现的不变性(invariant)凌驾其特异性(specialization)，因为它表示不论derived class变得多么特异化，它的行为都不可以改变，也绝不该在derived class中被重新定义。</p>
+<blockquote>
+<ul>
+<li>成员函数的接口总是会被继承。</li>
+<li>声明一个pure virtual函数的目的是为了让derived classes只继承函数接口。</li>
+<li>声明简朴的(非纯)impure virtual函数的目的，是让derived classes继承该函数的接口和缺省实现。</li>
+<li>声明non-virtual函数的目的是为了令derived  classes继承函数的接口及一份强制性实现。</li>
+</ul>
+</blockquote>
+<h3 id="条款35-考虑virtual函数以外的其他选择-Consider-alternatives-to-virtual-functions"><a href="#条款35-考虑virtual函数以外的其他选择-Consider-alternatives-to-virtual-functions" class="headerlink" title="条款35. 考虑virtual函数以外的其他选择(Consider alternatives to virtual functions.)"></a>条款35. 考虑virtual函数以外的其他选择(Consider alternatives to virtual functions.)</h3><blockquote>
+<ul>
+<li>使用non-virtual interface(NVI)手法，那是<strong>Template Method</strong>设计模式的一种特殊形式。它以public non-virtual成员函数包裹较低访问性(private或protected)的virtual函数。</li>
+<li>将virtual函数替换为“函数指针成员变量”，这是<strong>Strategy</strong>设计模式的一种分解表现形式。</li>
+<li>以tr1::function成员变量替换virtual函数，因而允许使用任何可调用物搭配一个兼容于需求的签名式。这也是<strong>Strategy</strong>设计模式的眸子形式。</li>
+<li>将基础体系内的virtual函数替换为另一个继承体系内的virtual函数。这是<strong>Strategy</strong>设计模式的传统实现手法。</li>
+</ul>
+</blockquote>
+<h3 id="条款36-绝不重新定义继承而来的non-virtual函数-Never-redefine-an-inherited-non-virtual-function"><a href="#条款36-绝不重新定义继承而来的non-virtual函数-Never-redefine-an-inherited-non-virtual-function" class="headerlink" title="条款36. 绝不重新定义继承而来的non-virtual函数(Never redefine an inherited non-virtual function.)"></a>条款36. 绝不重新定义继承而来的non-virtual函数(Never redefine an inherited non-virtual function.)</h3><p>&emsp;&emsp;non-virtual函数实静态绑定的，如pB被声明为一个pointer-to-B，通过pB调用的non-virtual函数永远是B所定义的版本，即使pB指向一个类型为“B派生之class”的对象；而virtual函数却是可以动态绑定的。</p>
+<h3 id="条款37-绝不重新定义继承而来的缺省参数值-Never-redefine-a-function’s-inherited-default-parameter-value"><a href="#条款37-绝不重新定义继承而来的缺省参数值-Never-redefine-a-function’s-inherited-default-parameter-value" class="headerlink" title="条款37. 绝不重新定义继承而来的缺省参数值(Never redefine a function’s inherited default parameter value.)"></a>条款37. 绝不重新定义继承而来的缺省参数值(Never redefine a function’s inherited default parameter value.)</h3><p>&emsp;&emsp;virtual函数系动态绑定，而缺省参数值却是静态绑定。意思是你可能会在“调用一个定义于derived class内的virtual函数”的同时，却使用base class为它所指定的缺省参数值。</p>
+<ol>
+<li>静态绑定：又名前期绑定(early binding)   静态类型(static type)：在程序中被声明时所采用的类型。</li>
+<li>动态绑定：又名后期绑定(late binding)    动态类型(dynamic type):指的是“目前所指对象的类型”，也就是说，没动态类型可以表现出一个对象将会有什么行为。。</li>
+</ol>
+<blockquote>
+<ul>
+<li>绝对不要重新定义一个继承而来的缺省参数值，因为缺省参数值都是静态绑定，而virtual函数————你唯一应该覆写的东西————却是动态绑定。</li>
+</ul>
+</blockquote>
+<h3 id="条款38-通过复合塑模出has-a或“根据某物实现出”-Model-“has-a”-or-“is-implemented-in-terms-of”-through-composition"><a href="#条款38-通过复合塑模出has-a或“根据某物实现出”-Model-“has-a”-or-“is-implemented-in-terms-of”-through-composition" class="headerlink" title="条款38. 通过复合塑模出has-a或“根据某物实现出”(Model “has-a” or “is-implemented-in-terms-of” through composition.)"></a>条款38. 通过复合塑模出has-a或“根据某物实现出”(Model “has-a” or “is-implemented-in-terms-of” through composition.)</h3><blockquote>
+<ul>
+<li>复合(composition)的意义和public继承完全不同。</li>
+<li>在应用域(application domain)，复合意味has-a(有一个)。在实现域(implementation domain)，复合意味is-implemented-in-terms-of(根据某物实现出)。</li>
+</ul>
+</blockquote>
+<h3 id="条款39-明智而审慎地使用private继承-Use-private-inheritance-judiciously"><a href="#条款39-明智而审慎地使用private继承-Use-private-inheritance-judiciously" class="headerlink" title="条款39. 明智而审慎地使用private继承(Use private inheritance judiciously.)"></a>条款39. 明智而审慎地使用private继承(Use private inheritance judiciously.)</h3><ol>
+<li>如果classes之间的继承关系是private，编译器不会自动将一个derived class对象(例如Student)转换为一个base class对象(例如Person)。这和public继承不同。</li>
+<li>由private base class继承而来的所有成员，在derived class中都会变成private属性，纵使它们在base class中原本是protected或public属性。</li>
+</ol>
+<p>&emsp;&emsp;private继承意味着只有实现部分被继承，接口部分略去。</p>
+<blockquote>
+<ul>
+<li>private继承意味is-implemented-in-terms of(根据某物实现出)。它通常比复合(composition)的级别低。但是当derived class需要访问protected base class的成员，或需要重新定义继承而来的virtual函数时，这么设计是合理的。</li>
+<li>和复合(composition)不同，private继承可以造成empty base最优化。这对致力于“对象尺寸最小化”的程序库开发者而言，可能很重要。</li>
+</ul>
+</blockquote>
+<h3 id="条款40-明智而审慎地使用多重继承-Use-multiple-inheritance-judiciously"><a href="#条款40-明智而审慎地使用多重继承-Use-multiple-inheritance-judiciously" class="headerlink" title="条款40. 明智而审慎地使用多重继承(Use multiple inheritance judiciously.)"></a>条款40. 明智而审慎地使用多重继承(Use multiple inheritance judiciously.)</h3><blockquote>
+<ul>
+<li>多重继承比单一继承复杂。它可能导致新的歧义性，以及对virtual继承的需要。</li>
+<li>virtual继承会增加大小、速度、初始化(及赋值)复杂度等等成本。如果virtual base classes不带任何数据，将是最具实用价值的情况。</li>
+<li>多重继承的确有正当用途。其中一个情节涉及“public继承某个Interface class”和“private继承某个协助实现的class”的两相结合。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="7-模板与泛型编程-Templates-and-Generic-Programming-粗略阅读"><a href="#7-模板与泛型编程-Templates-and-Generic-Programming-粗略阅读" class="headerlink" title="7. 模板与泛型编程(Templates and Generic Programming.)(粗略阅读)"></a>7. 模板与泛型编程(Templates and Generic Programming.)(<strong>粗略阅读</strong>)</h2><h3 id="条款41-了解隐式接口和编译期多态-Understand-implicit-interfaces-and-compile-time-polymorphism"><a href="#条款41-了解隐式接口和编译期多态-Understand-implicit-interfaces-and-compile-time-polymorphism" class="headerlink" title="条款41. 了解隐式接口和编译期多态(Understand implicit interfaces and compile-time polymorphism.)"></a>条款41. 了解隐式接口和编译期多态(Understand implicit interfaces and compile-time polymorphism.)</h3><blockquote>
+<ul>
+<li>classes 和 templates都支持接口(interfaces)和多态(polymorphism)。</li>
+<li>对classes而言接口是显式的(explicit)，以函数签名为中心。多态则是通过vvirtual函数发生于运行期。</li>
+<li>对templa参数而言，接口是隐式的(implicit)，奠基于有效表达式。多态则是通过template具现化和函数重载解析(function overloading resolution)发生于编译期。</li>
+</ul>
+</blockquote>
+<h3 id="条款42-了解typename的双重意义-Understand-the-two-meanings-of-typename"><a href="#条款42-了解typename的双重意义-Understand-the-two-meanings-of-typename" class="headerlink" title="条款42. 了解typename的双重意义(Understand the two meanings of typename.)"></a>条款42. 了解typename的双重意义(Understand the two meanings of typename.)</h3><blockquote>
+<ul>
+<li>声明template参数时，前缀关键字class和typename可互换。</li>
+<li>请使用关键字typename标识嵌套从属类型名称；但不得在base class lists(基类列)或member initialization list(成员初值列)内以它作为base class修饰符。</li>
+</ul>
+</blockquote>
+<h3 id="条款43-学习处理模板化基类内的名称-Know-how-to-access-names-in-templatized-base-classes"><a href="#条款43-学习处理模板化基类内的名称-Know-how-to-access-names-in-templatized-base-classes" class="headerlink" title="条款43. 学习处理模板化基类内的名称(Know how to access names in templatized base classes.)"></a>条款43. 学习处理模板化基类内的名称(Know how to access names in templatized base classes.)</h3><blockquote>
+<ul>
+<li>可在derived class templates内通过“this-&gt;”指涉base class templates内的成员名称，或藉由一个明白写出的“base class资格修饰符”完成。</li>
+</ul>
+</blockquote>
+<h3 id="条款44-将与参数无关的代码抽离templates-Factor-parameter-independent-code-out-of-templates"><a href="#条款44-将与参数无关的代码抽离templates-Factor-parameter-independent-code-out-of-templates" class="headerlink" title="条款44. 将与参数无关的代码抽离templates(Factor parameter-independent code out of templates.)"></a>条款44. 将与参数无关的代码抽离templates(Factor parameter-independent code out of templates.)</h3><blockquote>
+<ul>
+<li>Templates生成多个classes和多个函数，所以任何template代码都不该与某个造成膨胀的template参数产生相依关系。</li>
+<li>因非类型模板参数(non-type template parameters)而造成的代码膨胀，往往可消除，做法是以函数参数或class成员变量替换template参数。</li>
+<li>因类型参数(type parameters)而造成的代码膨胀，往往可降低，做法是让带有完全相同的二进制表述(binary representations)的具现类型(instantiation types)共享实现码。</li>
+</ul>
+</blockquote>
+<h3 id="条款45-运用成员函数模板接受所有兼容类型-Use-member-function-templates-accept-“all-compatible-types-”"><a href="#条款45-运用成员函数模板接受所有兼容类型-Use-member-function-templates-accept-“all-compatible-types-”" class="headerlink" title="条款45. 运用成员函数模板接受所有兼容类型(Use member function templates accept “all compatible types.”)"></a>条款45. 运用成员函数模板接受所有兼容类型(Use member function templates accept “all compatible types.”)</h3><blockquote>
+<ul>
+<li>请使用member function templates(成员函数模板)生成“可接受所有兼容类型”的函数。</li>
+<li>如果你声明member templates用于“泛化copy构造”或“泛化assignment操作”，你还是需要声明正常的copy构造函数和copy assignment操作符。</li>
+</ul>
+</blockquote>
+<h3 id="条款46-需要声明类型转换时轻微模板定义非成员函数-Define-non-member-functions-inside-templates-when-type-conversions-are-desired"><a href="#条款46-需要声明类型转换时轻微模板定义非成员函数-Define-non-member-functions-inside-templates-when-type-conversions-are-desired" class="headerlink" title="条款46. 需要声明类型转换时轻微模板定义非成员函数(Define non-member functions inside templates when type conversions are desired.)"></a>条款46. 需要声明类型转换时轻微模板定义非成员函数(Define non-member functions inside templates when type conversions are desired.)</h3><blockquote>
+<ul>
+<li>当我们编写一个class template，而它所提供之“与此template相关的”函数支持“所有参数之隐式类型转换”时，请将那些函数定义为“class template内部的friend函数”。</li>
+</ul>
+</blockquote>
+<h3 id="条款47-请使用traits-classes表现类型信息-Use-traits-classes-for-information-about-types"><a href="#条款47-请使用traits-classes表现类型信息-Use-traits-classes-for-information-about-types" class="headerlink" title="条款47. 请使用traits classes表现类型信息(Use traits classes for information about types.)"></a>条款47. 请使用traits classes表现类型信息(Use traits classes for information about types.)</h3><blockquote>
+<ul>
+<li>Traits classes使得“类型相关信息”在编译器可用。它们以templates和“templates特化”完成实现。</li>
+<li>整合重载技术(overloading)后，traits classes有可能在编译器对类型执行if…else测试。</li>
+</ul>
+</blockquote>
+<h3 id="条款48-认识template元编程-Be-aware-of-template-metaprogramming"><a href="#条款48-认识template元编程-Be-aware-of-template-metaprogramming" class="headerlink" title="条款48. 认识template元编程(Be aware of template metaprogramming.)"></a>条款48. 认识template元编程(Be aware of template metaprogramming.)</h3><blockquote>
+<ul>
+<li>Template metaprogramming(TMP，模板元编程)可将工作由运行期移往编译器，因而得以实现早期错误侦测和更高的执行效率。</li>
+<li>TMP可被用来生成“基于政策选择组合”(based on combinations of policy choices)的客户定制代码，也可用来避免生成对某些特殊类型并不适合的代码。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="8-定制new和delete-CUstomizing-new-and-delete-粗略阅读"><a href="#8-定制new和delete-CUstomizing-new-and-delete-粗略阅读" class="headerlink" title="8. 定制new和delete(CUstomizing new and delete)(粗略阅读)"></a>8. 定制new和delete(CUstomizing new and delete)(<strong>粗略阅读</strong>)</h2><h3 id="条款49-了解new-handler的行为-Understand-the-behavior-of-the-new-handler"><a href="#条款49-了解new-handler的行为-Understand-the-behavior-of-the-new-handler" class="headerlink" title="条款49. 了解new-handler的行为(Understand the behavior of the new-handler.)"></a>条款49. 了解new-handler的行为(Understand the behavior of the new-handler.)</h3><blockquote>
+<ul>
+<li>set_new_handler允许客户指定一个函数，在内存分配无法获得满足时被调用。</li>
+<li>Nothrow new是一个颇为局限的工具，因为它只适用于内存分配；后继的构造函数调用还是可能抛出异常。</li>
+</ul>
+</blockquote>
+<h3 id="条款50-了解new和delete的合理替换时机-Understand-when-it-makes-sense-to-replace-new-and-delete"><a href="#条款50-了解new和delete的合理替换时机-Understand-when-it-makes-sense-to-replace-new-and-delete" class="headerlink" title="条款50. 了解new和delete的合理替换时机(Understand when it makes sense to replace new and delete.)"></a>条款50. 了解new和delete的合理替换时机(Understand when it makes sense to replace new and delete.)</h3><blockquote>
+<ul>
+<li>有许多理由需要写个自定的new和delete，包括改善效能、对heap运用错误进行调试、收集heap使用信息。</li>
+</ul>
+</blockquote>
+<h3 id="条款51-编写new和delete时需固守常规-Adhere-to-convention-when-writing-new-and-delete"><a href="#条款51-编写new和delete时需固守常规-Adhere-to-convention-when-writing-new-and-delete" class="headerlink" title="条款51. 编写new和delete时需固守常规(Adhere to convention when writing new and delete.)"></a>条款51. 编写new和delete时需固守常规(Adhere to convention when writing new and delete.)</h3><blockquote>
+<ul>
+<li>operator new应该内含一个无穷循环，并在其中尝试分配内存，如果它无法满足内存需求，就该调用new-handler。它也应该有能力处理0 bytes申请。Class专属版本则还应该处理“比正确大小更大的(错误)申请”。</li>
+<li>operator delete应该在收到null指针时不做任何事。Class专属版本则还应该处理“比正确大小更大的(错误)申请”。</li>
+</ul>
+</blockquote>
+<h3 id="条款52-写了placement-new也要写placement-delete-Write-placement-delete-if-you-write-placement-new"><a href="#条款52-写了placement-new也要写placement-delete-Write-placement-delete-if-you-write-placement-new" class="headerlink" title="条款52.写了placement new也要写placement delete(Write placement delete if you write placement new.)"></a>条款52.写了placement new也要写placement delete(Write placement delete if you write placement new.)</h3><blockquote>
+<ul>
+<li>当你写一个placement operator new，请确定也写出了对应的placement operator delete。如果没有这样做，你的程序可能会发生隐微而时断时续的内存泄漏。</li>
+<li>当你声明placement new 和placement delete，请确定不要无意识(非故意)地遮掩了它们的正常版本。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="9-杂项讨论-Miscellany"><a href="#9-杂项讨论-Miscellany" class="headerlink" title="9. 杂项讨论(Miscellany)"></a>9. 杂项讨论(Miscellany)</h2><h3 id="条款53-不要轻忽编译器的警告-Pay-attention-to-compiler-warnings"><a href="#条款53-不要轻忽编译器的警告-Pay-attention-to-compiler-warnings" class="headerlink" title="条款53. 不要轻忽编译器的警告(Pay attention to compiler warnings.)"></a>条款53. 不要轻忽编译器的警告(Pay attention to compiler warnings.)</h3><blockquote>
+<ul>
+<li>严肃对待编译器发出的警告信息。努力在你的编译器的最高(最严苛)警告级别下争取“无任何警告”的荣誉。</li>
+<li>不要过度依赖编译器的报警能力，因为不同的编译器对待事物的态度并不相同。一旦移植到另一个编译器上，你原本依赖的警告信息有可能消失。</li>
+</ul>
+</blockquote>
+<h3 id="条款54-让自己熟悉包括TR1在内的标准程序库-Familiarize-yourself-with-the-standard-library-including-TR1"><a href="#条款54-让自己熟悉包括TR1在内的标准程序库-Familiarize-yourself-with-the-standard-library-including-TR1" class="headerlink" title="条款54. 让自己熟悉包括TR1在内的标准程序库(Familiarize yourself with the standard library, including TR1.)"></a>条款54. 让自己熟悉包括TR1在内的标准程序库(Familiarize yourself with the standard library, including TR1.)</h3><p>&emsp;&emsp;C++98列入的C++标准程序库的主要成分：</p>
+<blockquote>
+<p>STL(Standard Template Library，标准模板库)，覆盖容器(<strong>containers</strong>如vector,string,map)、迭代器(<strong>iterator</strong>)、算法(<strong>algorithms</strong>如find，sort，transform)、函数对象(<strong>function objects</strong>如less，greater)、各种容器适配器(<strong>container adapters</strong>如stack，priority_queue)和函数对象适配器(<strong>function object adapters</strong>如mem_fun，not1)。<br>Iostream，覆盖用户自定缓冲功能、国际化I/O，以及预先定义好的对象cin，cout，cerr和clog。<br>国际化支持，包括多区域(multiple active locales)能力。像wchar_t(16bits/char)和wstring(wchar_ts组成的strings)等类型都对促进Unicode有所帮助，<br>数值处理，包括复数模板(complex)和纯数值数组(valarray)。<br>异常阶层体系(exception hierarchy)，包括base class exception及其<strong>derived classes</strong> logic_cerr和runtime_error，以及更深继承的各个classes。<br>C89标准程序库。1989C标准程序库内的每个东西也都被覆盖于C++内。</p>
+</blockquote>
+<p>&emsp;&emsp;TR1详细叙述了14个新组件(components，也就是程序库机能单位)，统统放在std命名空间内，更正确地说是在其嵌套命名空间tr1内。</p>
+<ol>
+<li><strong>智能指针</strong>(smart pointers) tr1::shared_ptr和tr1::weak_ptr。</li>
+<li><strong>tr1::function</strong>，此物得以表示任何<em>callable entity</em>(可调用物，也就是任何函数或函数对象)，只要其签名符合目标。</li>
+<li><strong>tr1::bind</strong>，它能够做STL绑定器(<em>binders</em>)bind1st和bind2nd所做的每一件事，而又更多。</li>
+<li><strong>Hash tables</strong>，用来实现sets，multisets，maps和multi-maps。</li>
+<li><strong>正则表达式</strong>(Regular expressions)，包括正则表达式为基础的字符串查找和替换，或是从某个匹配字符串到另一个匹配字符串的逐一迭代(iterator)等等。</li>
+<li><strong>Tuples</strong>(变量组)，这是标准程序库中的pair template的新一代制品。pair只能持有两个对象，tr1::tuple可持有任意个数的对象。</li>
+<li><strong>tr1::aray</strong>，本质上是个“STL化”数组，即一个支持成员函数如begin和end的数组。不过tr1::array的大小固定，并不适用动态内存。</li>
+<li><strong>tr1::mem_fn</strong>，这是个语气构造上与成员函数指针(member function pointers)一致的东西。</li>
+<li><strong>tr1::reference_wrapper</strong>，一个“让references的行为更像对象”的设施。它可以造成对象容器“犹如持有references”。</li>
+<li><strong>随机数</strong>(random number)生成工具，它大大超越了rand，那是C++继承自C标准程序库的一个函数。</li>
+<li><strong>数学特殊函数</strong>，包括Laguerre多项式、Bessel函数、完全椭圆积分(complete elliptic integrals)，以及更多数学函数。</li>
+<li><strong>C99兼容扩充</strong>。这是一大堆函数和模板，用来将许多新的C99程序库特性带进C++。</li>
+<li><strong>Type traits</strong>，一组traits classes，用于提供类型(types)的编译期信息。</li>
+<li><strong>tr1::result_of</strong>，这是个template，用来推到函数调用的返回类型。</li>
+</ol>
+<blockquote>
+<ul>
+<li>C++标准程序库的主要机能由STL、iostreams、locales组成。并包含C99标准程序库。</li>
+<li>TR1添加了智能指针(如tr1::shared_ptr)、一般化函数指针(tr1::function)、hash-based容器、正则表达式(regular expressions)以及另外是个组件的支持。</li>
+<li>TR1自身只是一份规范。为获得TR1提供的好处，需要一份实物。一个好的实物来源是Boost。</li>
+</ul>
+</blockquote>
+<h3 id="条款55：让自己熟悉Boost-Familiarize-yourself-with-Boost"><a href="#条款55：让自己熟悉Boost-Familiarize-yourself-with-Boost" class="headerlink" title="条款55：让自己熟悉Boost(Familiarize yourself with Boost.)"></a>条款55：让自己熟悉Boost(Familiarize yourself with Boost.)</h3><p>&emsp;&emsp;Boost程序库对付的主题非常繁多，区分数十个类目，包括(程序库抽样)：</p>
+<ol>
+<li><strong>字符串与文本处理</strong>，覆盖具备类型安全(safe-type)的printf-like格式化动作、正则表达式，以及语汇单元切割(tokenizing)和解析(parsing)。</li>
+<li><strong>容器</strong>，覆盖“接口与STL相似且大小固定”的数组、大小可变的bitsets以及多位数组。</li>
+<li><strong>函数对象和高级编程</strong>，覆盖若干倍用来作为TR1机能基础的程序库。</li>
+<li><strong>泛型编程</strong>(Generic programming)，覆盖一大组traits classes。</li>
+<li><strong>模板元编程</strong>(Template metaprogramming, TMP)，覆盖一个针对编译器assertions而写的程序库，以及Boost MPL程序库。</li>
+<li><strong>数学与数值</strong>(Math and numerics)，包括有理数、八元数和四元数(octonions and quaternions)、常见的公约数(divisor)和少见的多重运算、随机数。</li>
+<li><strong>正确性与测试</strong>(Correctness and testing)，覆盖用来将隐式模板接口形式化的程序库，以及针对“测试优先”编程形态而设计的措施。</li>
+<li><strong>数据结构</strong>，覆盖类型安全和unions以及tuple程序库。</li>
+<li><strong>语言间的支持</strong>(Inter-language support)，包括允许C++和Python之间的无缝互操作性(seamless interoperability)。</li>
+<li><strong>内存</strong>，覆盖Pool程序库，用来做出高效率而区块大小固定的分配器，以及多变化的智能指针，包括TR1智能指针。</li>
+<li><strong>杂项</strong>，包括CRC检验、日期和时间的处理、在文件系统上来回移动等等。</li>
+</ol>
+<blockquote>
+<ul>
+<li>Boost是一个社群，也是一个网站。致力于免费、源码开放、同僚复审的C++程序库开发。Boost在C++标准化过程中扮演深具影响力的角色。</li>
+<li>Boost提供许多TR1组件实现品，以及其他许多程序库。</li>
+</ul>
+</blockquote>
+<hr>
 <hr>
 
       
@@ -747,7 +1114,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-让自己习惯C-Accustoming-Yourself-to-C"><span class="nav-number">1.</span> <span class="nav-text">1. 让自己习惯C++(Accustoming Yourself to C++)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款01：视C-为一个语言联邦-View-C-as-a-federation-of-languages"><span class="nav-number">1.1.</span> <span class="nav-text">条款01：视C++为一个语言联邦(View C++ as a federation of languages)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款02-尽量以const，enum，inline替换-define-Prefer-consts-enums-and-inlines-to-defines"><span class="nav-number">1.2.</span> <span class="nav-text">条款02. 尽量以const，enum，inline替换#define(Prefer consts, enums, and inlines to #defines)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款03-尽可能使用const-Use-const-whenever-possible"><span class="nav-number">1.3.</span> <span class="nav-text">条款03. 尽可能使用const(Use const whenever possible)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.3.1.</span> <span class="nav-text">const成员函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款04-确定对象被使用前已先被初始化-Make-sure-that-objects-are-initialized-before-they-are-used"><span class="nav-number">1.4.</span> <span class="nav-text">条款04. 确定对象被使用前已先被初始化(Make sure that objects are initialized before they are used)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-构造-析构-赋值运算-Constructors-Destructors-and-Assignment-Operators"><span class="nav-number">2.</span> <span class="nav-text">2.构造/析构/赋值运算(Constructors, Destructors, and Assignment Operators)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款05-了解C-默默编写并调用哪些函数-Know-what-functions-C-silently-writes-and-calls"><span class="nav-number">2.1.</span> <span class="nav-text">条款05. 了解C++默默编写并调用哪些函数(Know what functions C++ silently writes and calls)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款06-若不想使用编译器自动生成的函数，就该明确拒绝-Explicitly-disallow-the-use-of-compiler-generated-functions-you-do-not-want"><span class="nav-number">2.2.</span> <span class="nav-text">条款06. 若不想使用编译器自动生成的函数，就该明确拒绝(Explicitly disallow the use of compiler-generated functions you do not want.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#07-为多态基类声明virtual析构函数-Declare-destructors-virtual-in-polymorphic-base-classes"><span class="nav-number">2.3.</span> <span class="nav-text">07. 为多态基类声明virtual析构函数(Declare destructors virtual in polymorphic base classes.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#08-别让异常逃离析构函数-Prevent-exceptions-from-leaving-destructors"><span class="nav-number">2.4.</span> <span class="nav-text">08. 别让异常逃离析构函数(Prevent exceptions from leaving destructors)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#09-绝不在构造和析构过程中调用virtual函数-Never-call-virtual-functions-during-construction-or-destruction"><span class="nav-number">2.5.</span> <span class="nav-text">09. 绝不在构造和析构过程中调用virtual函数(Never call virtual functions during construction or destruction.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-令operator-返回一个reference-to-this-Have-assigment-operators-return-a-reference-to-this"><span class="nav-number">2.6.</span> <span class="nav-text">10. 令operator= 返回一个reference to *this(Have assigment operators return a reference to *this.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-在operator-中处理“自我赋值”-Handle-assignment-to-self-in-operator"><span class="nav-number">2.7.</span> <span class="nav-text">11. 在operator= 中处理“自我赋值”(Handle assignment to self in operator=.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-复制对象时勿忘其每一个成分-Copy-all-parts-of-an-object"><span class="nav-number">2.8.</span> <span class="nav-text">12. 复制对象时勿忘其每一个成分(Copy all parts of an object.)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-让自己习惯C-Accustoming-Yourself-to-C"><span class="nav-number">1.</span> <span class="nav-text">1. 让自己习惯C++(Accustoming Yourself to C++)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款01：视C-为一个语言联邦-View-C-as-a-federation-of-languages"><span class="nav-number">1.1.</span> <span class="nav-text">条款01：视C++为一个语言联邦(View C++ as a federation of languages)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款02-尽量以const，enum，inline替换-define-Prefer-consts-enums-and-inlines-to-defines"><span class="nav-number">1.2.</span> <span class="nav-text">条款02. 尽量以const，enum，inline替换#define(Prefer consts, enums, and inlines to #defines)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款03-尽可能使用const-Use-const-whenever-possible"><span class="nav-number">1.3.</span> <span class="nav-text">条款03. 尽可能使用const(Use const whenever possible)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.3.1.</span> <span class="nav-text">const成员函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款04-确定对象被使用前已先被初始化-Make-sure-that-objects-are-initialized-before-they-are-used"><span class="nav-number">1.4.</span> <span class="nav-text">条款04. 确定对象被使用前已先被初始化(Make sure that objects are initialized before they are used)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-构造-析构-赋值运算-Constructors-Destructors-and-Assignment-Operators"><span class="nav-number">2.</span> <span class="nav-text">2.构造/析构/赋值运算(Constructors, Destructors, and Assignment Operators)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款05-了解C-默默编写并调用哪些函数-Know-what-functions-C-silently-writes-and-calls"><span class="nav-number">2.1.</span> <span class="nav-text">条款05. 了解C++默默编写并调用哪些函数(Know what functions C++ silently writes and calls)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款06-若不想使用编译器自动生成的函数，就该明确拒绝-Explicitly-disallow-the-use-of-compiler-generated-functions-you-do-not-want"><span class="nav-number">2.2.</span> <span class="nav-text">条款06. 若不想使用编译器自动生成的函数，就该明确拒绝(Explicitly disallow the use of compiler-generated functions you do not want.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款07-为多态基类声明virtual析构函数-Declare-destructors-virtual-in-polymorphic-base-classes"><span class="nav-number">2.3.</span> <span class="nav-text">条款07. 为多态基类声明virtual析构函数(Declare destructors virtual in polymorphic base classes.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款08-别让异常逃离析构函数-Prevent-exceptions-from-leaving-destructors"><span class="nav-number">2.4.</span> <span class="nav-text">条款08. 别让异常逃离析构函数(Prevent exceptions from leaving destructors)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款09-绝不在构造和析构过程中调用virtual函数-Never-call-virtual-functions-during-construction-or-destruction"><span class="nav-number">2.5.</span> <span class="nav-text">条款09. 绝不在构造和析构过程中调用virtual函数(Never call virtual functions during construction or destruction.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款10-令operator-返回一个reference-to-this-Have-assigment-operators-return-a-reference-to-this"><span class="nav-number">2.6.</span> <span class="nav-text">条款10. 令operator= 返回一个reference to *this(Have assigment operators return a reference to *this.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款11-在operator-中处理“自我赋值”-Handle-assignment-to-self-in-operator"><span class="nav-number">2.7.</span> <span class="nav-text">条款11. 在operator= 中处理“自我赋值”(Handle assignment to self in operator=.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款12-复制对象时勿忘其每一个成分-Copy-all-parts-of-an-object"><span class="nav-number">2.8.</span> <span class="nav-text">条款12. 复制对象时勿忘其每一个成分(Copy all parts of an object.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-资源管理-Resource-Management"><span class="nav-number">3.</span> <span class="nav-text">3.资源管理(Resource Management)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款13-以对象管理资源-Use-objects-to-manage-resources"><span class="nav-number">3.1.</span> <span class="nav-text">条款13. 以对象管理资源(Use objects to manage resources.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款14-在资源管理类中小心copying行为-Think-carefully-behavior-in-resource-managing-classes"><span class="nav-number">3.2.</span> <span class="nav-text">条款14. 在资源管理类中小心copying行为(Think carefully behavior in resource-managing classes.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款15-在资源管理类中提供对原始资源的访问-Provide-access-to-raw-resources-in-resource-managing-classes"><span class="nav-number">3.3.</span> <span class="nav-text">条款15. 在资源管理类中提供对原始资源的访问(Provide access to raw resources in resource-managing classes.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款16-成对使用new和delete时要采取相同形式-Use-the-same-form-in-corresponding-uses-of-new-and-delete"><span class="nav-number">3.4.</span> <span class="nav-text">条款16. 成对使用new和delete时要采取相同形式(Use the same form in corresponding uses of new and delete)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款17-以独立语句将newed对象置入智能指针-Store-newed-objects-in-smart-pointers-in-standalone-statements"><span class="nav-number">3.5.</span> <span class="nav-text">条款17. 以独立语句将newed对象置入智能指针(Store newed objects in smart pointers in standalone statements.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-设计与声明-Designs-and-Declarations"><span class="nav-number">4.</span> <span class="nav-text">4. 设计与声明(Designs and Declarations)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款18-让接口容易被正确使用，不易被误用-Make-interfaces-easy-to-use-correctly-and-hard-to-use-incorrectly"><span class="nav-number">4.1.</span> <span class="nav-text">条款18. 让接口容易被正确使用，不易被误用(Make interfaces easy to use correctly and hard to use incorrectly.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款19-设计class犹如设计type-Treat-class-design-as-type-design"><span class="nav-number">4.2.</span> <span class="nav-text">条款19. 设计class犹如设计type(Treat class design as type design)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款20-宁以pass-by-reference-to-const替换pass-by-value"><span class="nav-number">4.3.</span> <span class="nav-text">条款20. 宁以pass-by-reference-to-const替换pass-by-value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款21-必须返回对象时，别妄想返回其reference-Don’t-try-to-return-a-reference-when-you-must-return-an-object"><span class="nav-number">4.4.</span> <span class="nav-text">条款21. 必须返回对象时，别妄想返回其reference(Don’t try to return a reference when you must return an object.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款22-将成员变量声明为private-Declare-data-members-private"><span class="nav-number">4.5.</span> <span class="nav-text">条款22. 将成员变量声明为private(Declare data members private.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款23-宁以non-member、non-friend替换member函数"><span class="nav-number">4.6.</span> <span class="nav-text">条款23. 宁以non-member、non-friend替换member函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款24-若所有参数皆需类型转换，请为此采用non-member函数-Declare-non-member-functions-when-type-conversions-should-apply-to-all-parameters"><span class="nav-number">4.7.</span> <span class="nav-text">条款24. 若所有参数皆需类型转换，请为此采用non-member函数(Declare non-member functions when type conversions should apply to all parameters.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款25-考虑写出一个不抛出异常的swap函数-Consider-support-for-a-non-throwing-swap"><span class="nav-number">4.8.</span> <span class="nav-text">条款25. 考虑写出一个不抛出异常的swap函数(Consider support for a non-throwing swap.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-实现-Implementations"><span class="nav-number">5.</span> <span class="nav-text">5. 实现(Implementations)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款26-尽可能延后变量定义式的出现时间-Postpone-variable-definitions-as-long-as-possible"><span class="nav-number">5.1.</span> <span class="nav-text">条款26. 尽可能延后变量定义式的出现时间(Postpone variable definitions as long as possible.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款27-尽量少做转型动作-Minimize-casting"><span class="nav-number">5.2.</span> <span class="nav-text">条款27. 尽量少做转型动作(Minimize casting.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款28-避免返回handles指向对象内部成分-Avoid-returning-“handles”-to-object-internals"><span class="nav-number">5.3.</span> <span class="nav-text">条款28. 避免返回handles指向对象内部成分(Avoid returning “handles” to object internals.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款29-为“异常安全”而努力是值得的-Strive-for-exception-safe-code"><span class="nav-number">5.4.</span> <span class="nav-text">条款29. 为“异常安全”而努力是值得的(Strive for exception-safe code.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款30-透彻了解inlining的里里外外-Understand-the-ins-and-outs-of-inlining"><span class="nav-number">5.5.</span> <span class="nav-text">条款30. 透彻了解inlining的里里外外(Understand the ins and outs of inlining.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款31-将文件间的编译依存关系降至最低-Minimize-compilation-dependencies-between-files"><span class="nav-number">5.6.</span> <span class="nav-text">条款31. 将文件间的编译依存关系降至最低(Minimize compilation dependencies between files.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-继承与面向对象设计-Inheritance-and-Object-Oriented-Design"><span class="nav-number">6.</span> <span class="nav-text">6 继承与面向对象设计(Inheritance and Object-Oriented Design.)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款32-确定你的public继承塑模出is-a关系-Make-sure-public-inheritance-models-“is-a-”"><span class="nav-number">6.1.</span> <span class="nav-text">条款32. 确定你的public继承塑模出is-a关系(Make sure public inheritance models “is-a.”)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款33-避免遮掩继承而来的名称-Avoid-hiding-inherited-names"><span class="nav-number">6.2.</span> <span class="nav-text">条款33. 避免遮掩继承而来的名称(Avoid hiding inherited names.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款34-区分接口继承和实现继承-Differentiate-between-inheritance-of-interface-and-inheritance-of-implementation"><span class="nav-number">6.3.</span> <span class="nav-text">条款34. 区分接口继承和实现继承(Differentiate between inheritance of interface and inheritance of implementation.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款35-考虑virtual函数以外的其他选择-Consider-alternatives-to-virtual-functions"><span class="nav-number">6.4.</span> <span class="nav-text">条款35. 考虑virtual函数以外的其他选择(Consider alternatives to virtual functions.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款36-绝不重新定义继承而来的non-virtual函数-Never-redefine-an-inherited-non-virtual-function"><span class="nav-number">6.5.</span> <span class="nav-text">条款36. 绝不重新定义继承而来的non-virtual函数(Never redefine an inherited non-virtual function.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款37-绝不重新定义继承而来的缺省参数值-Never-redefine-a-function’s-inherited-default-parameter-value"><span class="nav-number">6.6.</span> <span class="nav-text">条款37. 绝不重新定义继承而来的缺省参数值(Never redefine a function’s inherited default parameter value.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款38-通过复合塑模出has-a或“根据某物实现出”-Model-“has-a”-or-“is-implemented-in-terms-of”-through-composition"><span class="nav-number">6.7.</span> <span class="nav-text">条款38. 通过复合塑模出has-a或“根据某物实现出”(Model “has-a” or “is-implemented-in-terms-of” through composition.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款39-明智而审慎地使用private继承-Use-private-inheritance-judiciously"><span class="nav-number">6.8.</span> <span class="nav-text">条款39. 明智而审慎地使用private继承(Use private inheritance judiciously.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款40-明智而审慎地使用多重继承-Use-multiple-inheritance-judiciously"><span class="nav-number">6.9.</span> <span class="nav-text">条款40. 明智而审慎地使用多重继承(Use multiple inheritance judiciously.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-模板与泛型编程-Templates-and-Generic-Programming-粗略阅读"><span class="nav-number">7.</span> <span class="nav-text">7. 模板与泛型编程(Templates and Generic Programming.)(粗略阅读)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款41-了解隐式接口和编译期多态-Understand-implicit-interfaces-and-compile-time-polymorphism"><span class="nav-number">7.1.</span> <span class="nav-text">条款41. 了解隐式接口和编译期多态(Understand implicit interfaces and compile-time polymorphism.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款42-了解typename的双重意义-Understand-the-two-meanings-of-typename"><span class="nav-number">7.2.</span> <span class="nav-text">条款42. 了解typename的双重意义(Understand the two meanings of typename.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款43-学习处理模板化基类内的名称-Know-how-to-access-names-in-templatized-base-classes"><span class="nav-number">7.3.</span> <span class="nav-text">条款43. 学习处理模板化基类内的名称(Know how to access names in templatized base classes.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款44-将与参数无关的代码抽离templates-Factor-parameter-independent-code-out-of-templates"><span class="nav-number">7.4.</span> <span class="nav-text">条款44. 将与参数无关的代码抽离templates(Factor parameter-independent code out of templates.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款45-运用成员函数模板接受所有兼容类型-Use-member-function-templates-accept-“all-compatible-types-”"><span class="nav-number">7.5.</span> <span class="nav-text">条款45. 运用成员函数模板接受所有兼容类型(Use member function templates accept “all compatible types.”)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款46-需要声明类型转换时轻微模板定义非成员函数-Define-non-member-functions-inside-templates-when-type-conversions-are-desired"><span class="nav-number">7.6.</span> <span class="nav-text">条款46. 需要声明类型转换时轻微模板定义非成员函数(Define non-member functions inside templates when type conversions are desired.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款47-请使用traits-classes表现类型信息-Use-traits-classes-for-information-about-types"><span class="nav-number">7.7.</span> <span class="nav-text">条款47. 请使用traits classes表现类型信息(Use traits classes for information about types.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款48-认识template元编程-Be-aware-of-template-metaprogramming"><span class="nav-number">7.8.</span> <span class="nav-text">条款48. 认识template元编程(Be aware of template metaprogramming.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-定制new和delete-CUstomizing-new-and-delete-粗略阅读"><span class="nav-number">8.</span> <span class="nav-text">8. 定制new和delete(CUstomizing new and delete)(粗略阅读)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款49-了解new-handler的行为-Understand-the-behavior-of-the-new-handler"><span class="nav-number">8.1.</span> <span class="nav-text">条款49. 了解new-handler的行为(Understand the behavior of the new-handler.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款50-了解new和delete的合理替换时机-Understand-when-it-makes-sense-to-replace-new-and-delete"><span class="nav-number">8.2.</span> <span class="nav-text">条款50. 了解new和delete的合理替换时机(Understand when it makes sense to replace new and delete.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款51-编写new和delete时需固守常规-Adhere-to-convention-when-writing-new-and-delete"><span class="nav-number">8.3.</span> <span class="nav-text">条款51. 编写new和delete时需固守常规(Adhere to convention when writing new and delete.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款52-写了placement-new也要写placement-delete-Write-placement-delete-if-you-write-placement-new"><span class="nav-number">8.4.</span> <span class="nav-text">条款52.写了placement new也要写placement delete(Write placement delete if you write placement new.)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-杂项讨论-Miscellany"><span class="nav-number">9.</span> <span class="nav-text">9. 杂项讨论(Miscellany)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条款53-不要轻忽编译器的警告-Pay-attention-to-compiler-warnings"><span class="nav-number">9.1.</span> <span class="nav-text">条款53. 不要轻忽编译器的警告(Pay attention to compiler warnings.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款54-让自己熟悉包括TR1在内的标准程序库-Familiarize-yourself-with-the-standard-library-including-TR1"><span class="nav-number">9.2.</span> <span class="nav-text">条款54. 让自己熟悉包括TR1在内的标准程序库(Familiarize yourself with the standard library, including TR1.)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条款55：让自己熟悉Boost-Familiarize-yourself-with-Boost"><span class="nav-number">9.3.</span> <span class="nav-text">条款55：让自己熟悉Boost(Familiarize yourself with Boost.)</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -792,7 +1159,7 @@
   <span class="post-meta-divider">|</span>
   <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">总字数:5.6k</span>
+  <span class="post-count">总字数:13.2k</span>
   </div>
 
 
