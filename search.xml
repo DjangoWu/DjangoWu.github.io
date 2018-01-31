@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[LeetCode611.Valid Triangle Number(Medium)]]></title>
+    <url>%2F2018%2F01%2F31%2Fleetcode611%2F</url>
+    <content type="text"><![CDATA[问题描述 Given an array consists of non-negative integers, your task is to count the number of triplets chosen from the array that can make triangles if we take them as side lengths of a triangle.Example 1:Input: [2,2,3,4]Output: 3Explanation:Valid combinations are:2,3,4 (using the first 2)2,3,4 (using the second 2)2,2,3Note: The length of the given array won’t exceed 1000. The integers in the given array are in the range of [0, 1000]. 解题思路 暴力解法(O(n^3)) 排序+二分搜索(O(n^2 * lg(n)))根据三角形性质，两边之和大于第三边，排序后三位数字只需判定前两个数字之和大于第三个数字即可。所以在确定前两个数字后，第三个数字范围使用二分搜索即可得出。 进一步优化(O(n^2))与第二种方法不同的是使用双指针法，从后往前遍历，枚举最大的数，然后利用双指针left和right寻找到符合三角形条件的长度的两条边。因为若是left和right两条边与枚举的数能满足三角形条件，则这两个数中间的数和right以及枚举的数均能组成三角形。 代码展示 暴力解法(O(n^3)) 12345678910111213141516171819202122class Solution &#123;public: int triangleNumber(vector&lt;int&gt;&amp; nums) &#123; int count = 0; int size = nums.size(); for (int i = 0; i &lt; size-2; i++) for (int j = i+1; j &lt; size-1; j++) for (int k = j+1; k &lt; size; k++) if(isTriangle(nums[i], nums[j], nums[k])) count++; return count; &#125; bool isTriangle(int a, int b, int c)&#123; if (a+b &gt; c &amp;&amp; a+c &gt; b &amp;&amp; b+c &gt; a) return true; else return false; &#125;&#125;; 排序+二分搜索(O(n^2 * lg(n))) 123456789101112131415161718192021222324class Solution &#123;public: int triangleNumber(vector&lt;int&gt;&amp; nums) &#123; int count = 0; int size = nums.size(); sort(nums.begin(), nums.end()); for (int i = 0; i &lt; size; i++)&#123; for (int j = i+1; j &lt; size; j++)&#123; int sum = nums[i] + nums[j]; int left = j+1, right = size; while(left &lt; right)&#123; int mid = left + (right - left) / 2; if(nums[mid] &lt; sum) left = mid + 1; else right = mid; &#125; count += right - 1 - j; &#125; &#125; return count; &#125; &#125;; 进一步优化(O(n^2)) 1234567891011121314151617181920class Solution &#123;public: int triangleNumber(vector&lt;int&gt;&amp; nums) &#123; int count = 0; int size = nums.size(); sort(nums.begin(), nums.end()); for (int i = size - 1; i &gt;= 2; --i)&#123; int left = 0, right = i - 1; while (left &lt; right)&#123; if (nums[left] + nums[right] &gt; nums[i]) &#123; count += right - left; --right; &#125; else ++left; &#125; &#125; return count; &#125; &#125;; 参考]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode458.Poor Pigs(Easy)]]></title>
+    <url>%2F2018%2F01%2F31%2Fleetcode458%2F</url>
+    <content type="text"><![CDATA[问题描述 There are 1000 buckets, one and only one of them contains poison, the rest are filled with water. They all look the same. If a pig drinks that poison it will die within 15 minutes. What is the minimum amount of pigs you need to figure out which bucket contains the poison within one hour.Answer this question, and write an algorithm for the follow-up general case. Follow-up:If there are n buckets and a pig drinking poison will die within m minutes, how many pigs (x) you need to figure out the “poison” bucket within p minutes? There is exact one bucket with poison. 解题思路 先看一只猪再一个小时内最多能验多少桶？一次喝一个桶中的水，15分钟后再喝第二个桶的，一个小时可以喝60/15 = 4次，最后一个桶是否有毒可通过排除法确定是否有毒。所以一只猪仔一个小时内可以验证5个桶。 两只猪的时候呢？利用二维的思想，两只猪可分为两个维度分别喝水判定，根据两只猪的死亡时间可以判定出有毒的桶。也就是猪A/B每15分钟试喝一行/一列的所有五桶水。因此两只猪在一个小时内可以验证25个桶。 N只的时候后利用多维思想可以类推得出。 上面思路可以很简单的推广到一般情况。 代码展示(C++)1234567891011class Solution &#123;public: int poorPigs(int buckets, int minutesToDie, int minutesToTest) &#123; int dimension = minutesToTest / minutesToDie + 1; int ans = 0; while(pow(dimension, ans) &lt; buckets) ans++; return ans; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode31.Next Permutation(Medium)]]></title>
+    <url>%2F2018%2F01%2F31%2Fleetcode%2031%20Next%20Permutation%2F</url>
+    <content type="text"><![CDATA[问题描述 Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).The replacement must be in-place, do not allocate extra memory.Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.1,2,3 → 1,3,23,2,1 → 1,2,31,1,5 → 1,5,1 解题思路&emsp;&emsp;首先需要了解一下全排列及其对应字典序。 对于该题，其目的在于求给定排列的下一个全排列，如果是最后一个的话就返回第一个全排列：(1, 2, 3)-&gt;(1, 3, 2)、(1, 2, 3, 5, 4)-&gt;(1, 2, 4, 3, 5)、(5, 1, 1)-&gt;(1, 1, 5) 使用例子来说明解题方式：(6, 5, 4, 8, 7, 5, 1)：从后往前遍历，找到非递增的数位，即4-&gt;(8, 7, 5, 1)，然后调换后面递增数列中比4大的最小的数，调换位置即5-&gt;(8, 7, 4, 1)，最后在对后面的数字重排序一下即可(1, 4, 7, 8)，最终结果(6, 5, 5, 1, 4, 7, 8) 代码展示(C++)1234567891011121314151617181920212223242526272829303132class Solution &#123;public: void nextPermutation(vector&lt;int&gt;&amp; nums) &#123; int size = nums.size(); int flag = 0; int i = size - 1; while(i &gt; 0)&#123; if(nums[i] &gt; nums[i-1])&#123; flag = i-1; break; &#125; i--; &#125; if (flag == 0 &amp;&amp; i == 0)&#123; sort(nums.begin(), nums.end()); return; &#125; int temp = flag + 1; for (int j = temp + 1; j &lt; size; j++)&#123; if (nums[j] &gt; nums[flag] &amp;&amp; nums[j] &lt; nums[temp]) temp = j; &#125; swap (nums[flag], nums[temp]); sort(nums.begin()+flag + 1, nums.end()); &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[让子弹飞一会儿]]></title>
     <url>%2F2018%2F01%2F20%2F%E8%AE%A9%E5%AD%90%E5%BC%B9%E9%A3%9E%E4%B8%80%E4%BC%9A%E5%84%BF%2F</url>
     <content type="text"><![CDATA[你说是钱对我重要，还是你对我重要你和钱对我都不重要，没有你，对我很重要 &emsp;&emsp;虽然这只是我看的姜文的第二部电影，但是在我心中已经可以把他和王小波一样捧到天上去了。前面一部看的是《鬼子来了》，尽管很多人说国民的劣根性，但是我还是为我民族的善良淳朴落泪。 &emsp;&emsp;因为涉及一些政治因素，《鬼子来了》被禁；《太阳照常升起》又因为一些晦涩难懂的隐喻而票房不佳。影评人或者观众或多或少总会有些怀疑姜文的导演能力，这些不认同的声音在他的心里挥之不去。所以这部片子他做出了一些改变，在我看来，一方面既能表达他心中想要表现的观点和情感，另一方便也是为了破除格局获得认同，按其电影里的话来说就是“站着也把钱赚了”(张和冯的电影大多向资本妥协)。从最后的票房结果和影片后续的评论看来，他也确实做到了。 &emsp;&emsp;关于人物关于情节不想多说，人各有见，豆瓣知乎也是有一大堆讨论的。想说的主要是自己对于这部片子和对于姜文的感受。 &emsp;&emsp;在影片中很多地方都能看到姜文的英雄主义情怀，比如松坡将军及小凤仙。不清楚姜文为何对民国时代情有独钟，或许是因为这个动荡的历史时期能有更多的材料能更好的抒发情绪吧。对于角色的名字也是颇为讲究，张牧之(张麻子)、武智冲、马邦德这几个带着或是隐喻或是恶趣味的名字也能让人为之一笑。 &emsp;&emsp;说下印象最深刻的几场戏： 小六子为了自证清白，不想说他中二，只是看到他最后死去的时候，心好像被什么抓住了似得，除了对这个有血性的少年的心疼之外，剩下的也只有对于一哄而散的看客和强权者及畏于强权者的愤怒。 三个影帝同台飙戏，据说是拍了好几十次才完成的，也难怪如此耐看，不管是镜头的转换还是台词对于人物的勾勒对于情节的推动都无可挑剔。有人说是因为姜文对葛优说剧组里有发哥，对发哥说剧组里有葛优才把这两人凑到了一起，且不论真假，能看到这三位出现在同一个大荧幕上就够开心了。 叹号之后的问号，两个简简单单的符号很容易的就表达了其对于革命的必要性以及革命之后的路要怎么走(抑或是对于革命后)的困惑。 “上海就是浦东，浦东就是上海”。 &emsp;&emsp;借用豆瓣上一个影评中的两句话作为结尾吧： 在其最纯粹的意义上，只要贫穷和等级制依然存在，革命就永无止息。然而对于大多数人而言，革命之后，应当是世俗生活的开始，而不是继续革命，更不是永远革命。 于是，一切血与火最终都淹没在湖光山色掩映中的那首《送别》之中，火车开向七十年后改革开放的浦东，尾随的骑士沿着铁轨独行成一个孤绝的背影。这一切，像一个开始，又像一个结尾，更像是一个轮回。]]></content>
