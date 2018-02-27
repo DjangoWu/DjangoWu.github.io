@@ -1,6 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[LeetCode687. Longest Univalue Path(Easy)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode687%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a binary tree, find the length of the longest path where each node in the path has the same value. This path may or may not pass through the root. Note: The length of path between two nodes is represented by the number of edges between them. Example 1: Example 2: Note: The given binary tree has not more than 10000 nodes. The height of the tree is not more than 1000. 解题思路 题目要求找到一条最长路径，在该路径上，所有节点值相同。 使用递归的方法很好解决，返回单独子树的最大长度，然后自己比较根节点与左右子树节点的值即可。 注意是路径，分叉的情况不须考虑。 代码展示(C++)123456789101112131415161718192021222324252627282930313233343536// Runtime: 66 ms 51.29%/** * Definition for a binary tree node. * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class Solution &#123;private: int ans; public: int longestUnivaluePath(TreeNode* root) &#123; DFS(root); return ans; &#125; int DFS(TreeNode* node)&#123; if (!node) return 0; int left = 0; int right = 0; int leftCount = DFS(node-&gt;left); int rightCount = DFS(node-&gt;right); if (node-&gt;left &amp;&amp; node-&gt;val == node-&gt;left-&gt;val) left = leftCount + 1; if (node-&gt;right &amp;&amp; node-&gt;val == node-&gt;right-&gt;val) right = rightCount + 1; ans = max(ans, left+right); return max(left, right); &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode331. Verify Preorder Serialization of a Binary Tree(Medium)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode331%2F</url>
+    <content type="text"><![CDATA[问题描述 One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #. For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node. Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree. Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer. You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”. Example 1:“9,3,4,#,#,1,#,#,2,#,6,#,#”Return true Example 2:“1,#”Return false Example 3:“9,#,#,1”Return false 解题思路 给定一个字符序列，以逗号分隔，数字代表叶节点，#字符代表空节点，以前序遍历排序，题目要求判断该字符序列是否是一个有效的二叉树。 首先需要对字符串进行分割，将每个节点单独分离出来(方法较多)。 而后构造一个新的数组代表每个节点所包含的子节点数目，空节点自动赋值为2。遍历所有节点，判断该节点的父节点，找到则其父节点的子节点数目增加1，若找不到则返回false。 关于查找父节点，只需由该节点往前遍历，其最近的某个子节点数目不为2的节点即为其父节点。 testcase中存在很多边界条件，注意一下。 另外还有利用栈、每个节点的出入度等方法实现。 代码展示(C++)12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455// Runtime: 6 msclass Solution &#123;public: bool isValidSerialization(string preorder) &#123; vector&lt;string&gt; node; if (preorder.length() == 0) return true; preorder += ','; int start = 0, end = 0; // spilt string for (int i = 0; i &lt; preorder.length(); ++i)&#123; if (preorder[i] == ',')&#123; end = i; string tmp = string(preorder.begin()+start, preorder.begin()+end); node.push_back(tmp); start = end + 1; &#125; &#125; vector&lt;int&gt; flag(node.size(), 0); int nums = 0, sharps = 0; for (int i = 0; i &lt; node.size(); ++i)&#123; if(node[i] == "#")&#123; flag[i] = 2; sharps++; &#125; else nums++; bool tmpflag = false; for (int j = i-1; j &gt;= 0; --j)&#123; if (flag[j] != 2)&#123; flag[j]++; tmpflag = true; break; &#125; &#125; if (!tmpflag &amp;&amp; i != 0) return false; &#125; if (nums == 0)&#123; if (sharps == 1) return true; else return false; &#125; else if (sharps / nums &gt; 2) return false; for (int k = 0; k &lt; node.size(); ++k) if (flag[k] != 2) return false; return true; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode279. Perfect Squares(Medium)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode279%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, …) which sum to n. For example, given n = 12, return 3 because 12 = 4 + 4 + 4; given n = 13, return 2 because 13 = 4 + 9. 解题思路 给定一个数，寻找到最少的完美平方数，使得这些平方数之和为该给定数。 很容易想到使用动态规划(DP)算法，对于可以开方的数，其值确定为1。递推公式为dp[i] = min(dp[j] + dp[i-j], dp[i])。不过该公式需要遍历所有的j + k = i的组合，时间复杂度达到O(n^2)。 查看其它思路： 优化动态规划公式，如下图所示：红色部分表示平方数，所有的完美平方数都可以看做一个普通数加上一个完美平方数，递推式变为dp[i+j*j] = min(dp[i]+1, dp[i+j*j])。 使用四平方和定理，如果一个数有因子4，那么去掉4因子之后并不影响其平方和性质。如果一个数除余8等于7，那么其是由4个数平方构成。 代码展示(C++)12345678910111213141516171819202122232425262728293031// Runtime: 66 msclass Solution &#123;public: int numSquares(int n) &#123; vector&lt;int&gt; dp(n+1, INT_MAX); for (int i = 0; i * i &lt;= n; i++) dp[i*i] = 1; for (int i = 1; i &lt;= n; ++i)&#123; for (int j = 1; i+j*j &lt;= n; j++) dp[i+j*j] = min(dp[i]+1, dp[i+j*j]); &#125; return dp[n]; &#125;&#125;;// 四平方和定理 3msclass Solution &#123;public: int numSquares(int n) &#123; while (n % 4 == 0) n /= 4; if (n % 8 == 7) return 4; for (int a = 0; a * a &lt;= n; ++a) &#123; int b = sqrt(n - a * a); if (a * a + b * b == n) &#123; return !!a + !!b; &#125; &#125; return 3; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode173. Binary Search Tree Iterator(Medium)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode173%2F</url>
+    <content type="text"><![CDATA[问题描述 Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST. Calling next() will return the next smallest number in the BST. Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree. 解题思路 实现一个二叉搜索树的迭代器，要求next()(返回下一个最小的数)和hasNext()(是否存在下一个最小的数)的时间复杂度都在常数时间内，并且能使用的空间复杂度是O(h)，h为树的高度。 其实也就是将树中元素从小到大重新排列，也就是树的中序遍历，但是因为要求的空间复杂度，所以需要用栈的结构来保存中间遍历元素。 先将根节点直至最左节点入栈，然后依次出栈，出栈时若该节点存在右子节点，则其右子节点直至右子树的最左节点依次入栈。直至所有元素出栈。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950// Runtime: 20 ms/** * Definition for binary tree * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class BSTIterator &#123;private: stack&lt;TreeNode*&gt; st; public: BSTIterator(TreeNode *root) &#123; if (!root) return; while (root)&#123; st.push(root); root = root-&gt;left; &#125; &#125; /** @return whether we have a next smallest number */ bool hasNext() &#123; return !st.empty(); &#125; /** @return the next smallest number */ int next() &#123; TreeNode* tmp = st.top(); int val = tmp-&gt;val; st.pop(); if (tmp-&gt;right)&#123; tmp = tmp-&gt;right; while(tmp)&#123; st.push(tmp); tmp = tmp-&gt;left; &#125; &#125; return val; &#125;&#125;;/** * Your BSTIterator will be called like this: * BSTIterator i = BSTIterator(root); * while (i.hasNext()) cout &lt;&lt; i.next(); */]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode171. Excel Sheet Column Number(Easy)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode171%2F</url>
+    <content type="text"><![CDATA[问题描述 Related to question Excel Sheet Column Title Given a column title as appear in an Excel sheet, return its corresponding column number. For example: A -&gt; 1 B -&gt; 2 C -&gt; 3 … Z -&gt; 26 AA -&gt; 27 AB -&gt; 28 解题思路 将字符串转变为对应的数字，A-Z对应1-26，其实也就是26进制的数字转换。 逐位处理即可。 代码展示(C++)12345678910111213141516171819202122232425262728// Runtime: 7 msclass Solution &#123;public: int titleToNumber(string s) &#123; int len = s.length(); int ans = 0; int step = 1; for (int i = len - 1; i &gt;= 0; --i)&#123; int tmp = s[i] - 'A' + 1; ans = ans + tmp * step; step *= 26; &#125; return ans; &#125;&#125;;// 更简洁的写法：3 msclass Solution &#123;public: int titleToNumber(string s) &#123; int res = 0; for (char c:s) &#123; res *= 26; res += c - 'A' + 1; &#125; return res; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode118. Pascal's Triangle(Easy)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode118%2F</url>
+    <content type="text"><![CDATA[问题描述 Given numRows, generate the first numRows of Pascal’s triangle. For example, given numRows = 5,Return[ [1], [1,1], [1,2,1], [1,3,3,1], [1,4,6,4,1]] 解题思路 题意很简单，给定值，确定对应杨辉三角。 逐层计算即可，注意每一层对应范围。 代码展示(C++)123456789101112131415161718// Runtime: 3 msclass Solution &#123;public: vector&lt;vector&lt;int&gt;&gt; generate(int numRows) &#123; vector&lt;vector&lt;int&gt;&gt; ans; if (numRows &lt; 1) return ans; for (int i = 0; i &lt; numRows; ++i)&#123; vector&lt;int&gt; tmp(i+1, 1); for (int j = 1; j &lt; i; ++j)&#123; tmp[j] = ans[i-1][j-1] + ans[i-1][j]; &#125; ans.push_back(tmp); &#125; return ans; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode113.Path Sum II(Medium)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode113%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum. For example: 解题思路 题目给定一个二叉树和一个结果值，求所有路径节点之和与该结果值相等的路径。 深度优先遍历(DFS)，递归函数中需要保存当前节点路径。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435363738394041// Runtime: 11 ms/** * Definition for a binary tree node. * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class Solution &#123;private: vector&lt;vector&lt;int&gt;&gt; ans; public: vector&lt;vector&lt;int&gt;&gt; pathSum(TreeNode* root, int sum) &#123; if (!root) return ans; vector&lt;int&gt; tmp; DFS(root, tmp, 0, sum); return ans; &#125; void DFS(TreeNode* node, vector&lt;int&gt;&amp; tmp, int pathSum, int sum)&#123; if (!node) return; tmp.push_back(node-&gt;val); pathSum += node-&gt;val; if (node-&gt;left) DFS(node-&gt;left, tmp, pathSum, sum); if (node-&gt;right) DFS(node-&gt;right, tmp, pathSum, sum); if (!node-&gt;left &amp;&amp; !node-&gt;right)&#123; if (pathSum == sum) ans.push_back(tmp); &#125; tmp.pop_back(); &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode67.Add Binary(Easy)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode67%2F</url>
+    <content type="text"><![CDATA[问题描述 Given two binary strings, return their sum (also a binary string). For example,a = “11”b = “1”Return “100”. 解题思路 题意很简单，二进制数组加法。 最开始想法是将二进制转换为十进制，得到结果后再转换回来，但是这样的话很容易导致溢出 这题是十进制数组加法的简化版，从后往前逐位相加，注意边界问题，另外为结果多准备一个进位。 代码展示(C++)12345678910111213141516171819202122232425262728293031323334// Runtime: 5 msclass Solution &#123;public: string addBinary(string a, string b) &#123; int i = a.length() - 1; int j = b.length() - 1; int c = 0; int index; int n1, n2; vector&lt;int&gt; result(max(a.length(), b.length()) + 1, '0'); while(i &gt;= 0 || j &gt;= 0)&#123; n1 = 0; n2 = 0; if (i &gt;= 0) n1 = a[i] - '0'; if (j &gt;= 0) n2 = b[j] - '0'; result[max(i, j) + 1] = ((n1 + n2 + c) % 2); c = (n1 + n2 + c) / 2; i--; j--; &#125; result[0] = c; if(c == 0) index = 1; else index = 0; string ans; for (int k = index; k &lt; result.size(); ++k) ans += (result[k]+ '0'); return ans; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode21. Merge Two Sorted Lists(Easy)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode21%2F</url>
+    <content type="text"><![CDATA[问题描述 Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists. Example: Input: 1-&gt;2-&gt;4, 1-&gt;3-&gt;4Output: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4 解题思路 题意是合并两个已排序的链表。 题目简单，从头到尾，比较两个链表的表头元素的大小，然后插入新的链表中。 主要考察的是链表操作。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435// Runtime: 14 ms/** * Definition for singly-linked list. * struct ListNode &#123; * int val; * ListNode *next; * ListNode(int x) : val(x), next(NULL) &#123;&#125; * &#125;; */class Solution &#123;public: ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) &#123; ListNode* ans = new ListNode(0); ListNode* head = ans; while (l1 != NULL &amp;&amp; l2 != NULL) &#123; ListNode* tmp = new ListNode(0); if (l1-&gt;val &lt; l2-&gt;val)&#123; tmp-&gt;val = l1-&gt;val; l1 = l1-&gt;next; &#125; else&#123; tmp-&gt;val = l2-&gt;val; l2 = l2-&gt;next; &#125; tmp-&gt;next = NULL; ans-&gt;next = tmp; ans = ans-&gt;next; &#125; if (l1 != NULL) ans-&gt;next = l1; if (l2 != NULL) ans-&gt;next = l2; return head-&gt;next; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode39.Combination Sum(Medium)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode39%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a set of candidate numbers (C) (without duplicates) and a target number (T), find all unique combinations in C where the candidate numbers sums to T. The same repeated number may be chosen from C unlimited number of times. Note:All numbers (including target) will be positive integers.The solution set must not contain duplicate combinations.For example, given candidate set [2, 3, 6, 7] and target 7,A solution set is:[ [7], [2, 2, 3]] 解题思路 题目给定一个可选数的集合，以及一个目标数target，要求寻找所有组合方式，使得组合的数总和为target，集合中的数可以重复选择。 采用递归方法，其实也就是深度优先搜索(DFS)思想来解决。 先对可选数集合进行排序，而后枚举每一个元素作为根节点，然后每一次递归都添加一个新的节点，若路径上节点之和等于target就结束当前路径的搜索，保存该路径；若路径上节点之和大于target也结束当前路径搜索。(每个节点的子节点数值均大于等于该节点，保证结果的唯一性) 注意在递归结束返回后，把添加的节点去除。 代码展示(C++)12345678910111213141516171819202122232425262728293031323334// Runtime: 13 msclass Solution &#123;private: vector&lt;vector&lt;int&gt;&gt; ans;public: vector&lt;vector&lt;int&gt;&gt; combinationSum(vector&lt;int&gt;&amp; candidates, int target) &#123; if (candidates.size() == 0) return ans; sort(candidates.begin(), candidates.end()); for (int i = 0; i &lt; candidates.size(); i++)&#123; vector&lt;int&gt; tmp; tmp.push_back(candidates[i]); DFS(candidates, i, tmp, candidates[i], target); &#125; return ans; &#125; void DFS(vector&lt;int&gt;&amp; candidates, int pos, vector&lt;int&gt;&amp; tmp, int sum, int target)&#123; if (sum == target)&#123; ans.push_back(tmp); tmp.pop_back(); return; &#125; if (sum &gt; target)&#123; tmp.pop_back(); return; &#125; for (int i = pos; i &lt; candidates.size(); ++i)&#123; tmp.push_back(candidates[i]); DFS(candidates, i, tmp, sum + candidates[i], target); &#125; tmp.pop_back(); &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode55.Jump Game(Medium)]]></title>
+    <url>%2F2018%2F02%2F27%2FLeetCode55%2F</url>
+    <content type="text"><![CDATA[问题描述 Given an array of non-negative integers, you are initially positioned at the first index of the array. Each element in the array represents your maximum jump length at that position. Determine if you are able to reach the last index. For example:A = [2,3,1,1,4], return true.A = [3,2,1,0,4], return false. 解题思路 给定数组，数组上的值代表该位置最大可跳跃位置，问在初始为0的位置时能否抵达最末尾。 使用贪心算法，因为不需要寻求最优路线，所以较好解决。 这里有两种贪心的思路，一种是从后往前，不断更新能抵达末尾的点位置；另一种是从前往后，不断确定能抵达的贪心上界。 代码展示(C++)123456789101112131415161718192021222324252627282930313233// Runtime: 54 msclass Solution &#123;public: bool canJump(vector&lt;int&gt;&amp; nums) &#123; if (nums.size() &lt;= 1) return true; int dis = nums.size() - 1; for (int i = nums.size() - 2; i &gt;= 0; --i)&#123; if (nums[i] &gt;= dis - i)&#123; std::cout &lt;&lt; i &lt;&lt; " " &lt;&lt; dis &lt;&lt; std::endl; dis = i; &#125; &#125; if (dis == 0) return true; else return false; &#125;&#125;;// Runtime: 16 msclass Solution &#123;public: bool canJump(vector&lt;int&gt;&amp; nums) &#123; int reach=0; int i=0; while(i&lt;nums.size() &amp;&amp; i&lt;=reach)&#123; reach=max(reach,i+nums[i]); i++; &#125; return reach&gt;=nums.size()-1; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode116.Populating Next Right Pointers in Each Node(Medium)]]></title>
+    <url>%2F2018%2F02%2F26%2FLeetCode116%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a binary tree 12345struct TreeLinkNode &#123; TreeLinkNode *left; TreeLinkNode *right; TreeLinkNode *next;&#125; Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL. Initially, all next pointers are set to NULL. Note: You may only use constant extra space. You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children). For example, 解题思路 题意很好理解，在完全二叉树中每个节点增加一个next索引，指向树中同一层其右边节点，若是不存在，则指向null。 可使用简单的广度优先搜索(BFS)来解决，但是需要构造队列来保存节点。 注意到是完全二叉树，若存在左子节点，必有右子节点。所以就有root-&gt;left-&gt;next = root-&gt;right；并且如果当前节点存在next，则有root-&gt;right-&gt;next = root-&gt;next-&gt;left。具体查看下面实现代码。 代码展示(C++)123456789101112131415161718192021/** * Definition for binary tree with next pointer. * struct TreeLinkNode &#123; * int val; * TreeLinkNode *left, *right, *next; * TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125; * &#125;; */class Solution &#123;public: void connect(TreeLinkNode *root) &#123; if (!root) return; if (root-&gt;left) root-&gt;left-&gt;next = root-&gt;right; if (root-&gt;right &amp;&amp; root-&gt;next) root-&gt;right-&gt;next = root-&gt;next-&gt;left; connect(root-&gt;left); connect(root-&gt;right); &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode404.Sum of Left Leaves(Easy)]]></title>
+    <url>%2F2018%2F02%2F25%2FLeetCode404%2F</url>
+    <content type="text"><![CDATA[问题描述 Find the sum of all left leaves in a given binary tree.Example: 解题思路 题目要求出给定二叉树的所有左叶节点的值的和。 使用简单DFS深度遍历查找所有左叶节点即可。 代码展示(C++)123456789101112131415161718192021222324252627282930313233/** * Definition for a binary tree node. * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class Solution &#123; private: int leftSum = 0; public: int sumOfLeftLeaves(TreeNode* root) &#123; if (!root) return 0; DFS(root, false); return leftSum; &#125; void DFS(TreeNode* node, bool isLeft)&#123; if (!node) return; if (node-&gt;left) DFS(node-&gt;left, true); if (node-&gt;right) DFS(node-&gt;right, false); if (!(node-&gt;left) &amp;&amp; !(node-&gt;right) &amp;&amp; isLeft) leftSum += node-&gt;val; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode112. Path Sum(Easy)]]></title>
+    <url>%2F2018%2F02%2F20%2FLeetCode112%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum. For example:Given the below binary tree and sum = 22, &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;5&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/&emsp;\&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;4&emsp;&emsp;&emsp;8&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/&emsp;&emsp;&emsp;/&emsp;\&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;11&emsp;&emsp;13&emsp;&emsp;4&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/&emsp;&emsp;\&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;\&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;7&emsp;&emsp;&emsp;&emsp;2&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1return true, as there exist a root-to-leaf path 5-&gt;4-&gt;11-&gt;2 which sum is 22. 解题思路 题意很简单，就是找出一条从根节点到叶节点值之和与给定数值是否相等，存在这样路径的话返回true，否则false。 直接深度优先遍历即可。 代码展示(C++)123456789101112131415161718192021222324252627282930313233343536/** * Definition for a binary tree node. * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class Solution &#123; private: bool existPathSum = false; public: bool hasPathSum(TreeNode* root, int sum) &#123; if (!root) return false; DFS(root, 0, sum); return existPathSum; &#125; void DFS(TreeNode* node, int pathSum, int sum)&#123; if (!node) return; pathSum += node-&gt;val; if (node-&gt;left)&#123; DFS(node-&gt;left, pathSum, sum); &#125; if (node-&gt;right)&#123; DFS(node-&gt;right, pathSum, sum); &#125; if (!(node-&gt;left) &amp;&amp; !(node-&gt;right) &amp;&amp; (pathSum == sum)) existPathSum = true; &#125; &#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode104.Maximum Depth of Binary Tree(Easy)]]></title>
+    <url>%2F2018%2F02%2F13%2FLeetCode104%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a binary tree, find its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node. For example:Given binary tree [3,9,20,null,null,15,7], &emsp;&emsp;&emsp;&emsp;3&emsp;&emsp;&emsp;/&emsp;\&emsp;&emsp;9&emsp;&emsp;20&emsp;&emsp;&emsp;/&emsp;&emsp;\&emsp;&emsp;15&emsp;&emsp;&emsp;7return its depth = 3. 解题思路 题目要求二叉树的深度，使用简单的深度优先遍历即可。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950/** * Definition for a binary tree node. * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class Solution &#123;private: int depth = 0; public: int maxDepth(TreeNode* root) &#123; if (root)&#123; depth = 1; DFS(root, 1); &#125; return depth; &#125; void DFS(TreeNode* node, int level)&#123; if (!node) return; //std::cout &lt;&lt; node-&gt;val &lt;&lt; " " &lt;&lt; level &lt;&lt; std::endl; if (node-&gt;left)&#123; if (level+1 &gt; depth) depth = level+1; DFS(node-&gt;left, level+1); &#125; if (node-&gt;right)&#123; if (level+1 &gt; depth) depth = level+1; DFS(node-&gt;right, level+1); &#125; &#125;&#125;;// 示例中优化后的代码(是真的高效简洁)class Solution &#123;public: int maxDepth(TreeNode* root) &#123; if (!root) return 0; return max(maxDepth(root-&gt;left), maxDepth(root-&gt;right)) + 1; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[LeetCode532. K-diff Pairs in an Array(Easy)]]></title>
     <url>%2F2018%2F02%2F11%2FLeetCode532%2F</url>
     <content type="text"><![CDATA[问题描述 Given an array of integers and an integer k, you need to find the number of unique k-diff pairs in the array. Here a k-diff pair is defined as an integer pair (i, j), where i and j are both numbers in the array and their absolute difference is k. Example 1:Input: [3, 1, 4, 1, 5], k = 2Output: 2Explanation: There are two 2-diff pairs in the array, (1, 3) and (3, 5).Although we have two 1s in the input, we should only return the number of unique pairs.Example 2:Input:[1, 2, 3, 4, 5], k = 1Output: 4Explanation: There are four 1-diff pairs in the array, (1, 2), (2, 3), (3, 4) and (4, 5).Example 3:Input: [1, 3, 1, 5, 4], k = 0Output: 1Explanation: There is one 0-diff pair in the array, (1, 1).Note: The pairs (i, j) and (j, i) count as the same pair. The length of the array won’t exceed 10,000. All the integers in the given input belong to the range: [-1e7, 1e7]. 解题思路 题意很好理解，就是在数组中找到绝对值相差为k的元素对数，注意元素对数唯一，还有就是k的值有可能为0。 可以先对元素进行排序，然后用无序set(unordered_set)来存储没出现过的元素和用来存储重复的元素。依次遍历数组中元素，判定是否满足条件，得出结果。 代码展示(C++)1234567891011121314151617181920212223242526class Solution &#123;public: int findPairs(vector&lt;int&gt;&amp; nums, int k) &#123; if (k &lt; 0 || nums.size() &lt;= 1) return 0; int count = 0; sort(nums.begin(), nums.end()); unordered_set&lt;int&gt; set1; unordered_set&lt;int&gt; sameset; for (int i = 0; i &lt; nums.size(); ++i)&#123; if (k != 0)&#123; if(!set1.count(nums[i]) &amp;&amp; set1.count(nums[i] - k)) count++; set1.insert(nums[i]); &#125; else &#123; if (!sameset.count(nums[i]) &amp;&amp; set1.count(nums[i]))&#123; count++; sameset.insert(nums[i]); &#125; set1.insert(nums[i]); &#125; &#125; return count; &#125;&#125;;]]></content>
