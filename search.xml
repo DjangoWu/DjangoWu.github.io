@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[LeetCode166. Fraction to Recurring Decimal(Medium)]]></title>
+    <url>%2F2018%2F02%2F28%2FLeetCode166%2F</url>
+    <content type="text"><![CDATA[问题描述 Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.&gt; If the fractional part is repeating, enclose the repeating part in parentheses. For example, Given numerator = 1, denominator = 2, return “0.5”. Given numerator = 2, denominator = 1, return “2”. Given numerator = 2, denominator = 3, return “0.(6)”. 解题思路 给定两个整数，表示一个分数的分子和分母，最后以字符串形式返回这个分数，若分数是重复的，将重复部分用括号括起来。 分类讨论： 如果可以直接除尽，直接返回。 如果不能直接除尽，则先取整数，再计算小数，计算小数部分时就说每次取商，又可分为能除尽和循环小数两种情况： 若能除尽时最后可以直接返回结果 对于循环小数，需要将每次的被除数和当前商的位置用一个hash表保存起来，这样当再次发现相同的被除数时就说明出现了循环，那么在第一次出现这个被除数的商的位置加括号即可。 在运算时候注意符号问题和越界问题(以long类型存储) 代码展示(C++)123456789101112131415161718192021222324252627// Runtime: 3 msclass Solution &#123;public: string fractionToDecimal(int numerator, int denominator) &#123; if (numerator == 0) return "0"; long num1 = fabs(numerator), num2 = fabs(denominator); bool flag = (numerator&gt;0 ^ denominator&gt;0) ? true : false; string ans = (flag ? "-" : "") + to_string(num1 / num2); if (num1 % num2 == 0) return ans; num1 = num1 % num2; ans += "."; unordered_map&lt;int, int&gt; hash; while (!hash.count(num1)) &#123; hash[num1] = ans.size(); num1 *= 10; ans += to_string(num1 / num2); if (num1 % num2 == 0) return ans; num1 = num1 % num2; &#125; ans.insert(hash[num1], 1, '('); ans += ")"; return ans; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode155. Min Stack(Easy)]]></title>
+    <url>%2F2018%2F02%2F28%2FLeetCode155%2F</url>
+    <content type="text"><![CDATA[问题描述 Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. push(x) – Push element x onto stack. pop() – Removes the element on top of the stack. top() – Get the top element. getMin() – Retrieve the minimum element in the stack. Example:MinStack minStack = new MinStack();minStack.push(-2);minStack.push(0);minStack.push(-3);minStack.getMin(); –&gt; Returns -3.minStack.pop();minStack.top(); –&gt; Returns 0.minStack.getMin(); –&gt; Returns -2. 解题思路 实现一个最小栈，要求在常数时间内查找出栈中最小元素。 经典题目。使用双栈法，一个普通栈，一个最小值栈。 入栈时，除了入普通栈外，若当前值小于等于最小值栈顶元素，同时入最小值栈。 出栈时，除了出普通栈外，若栈顶值等于最小值栈顶元素，同时出最小值栈。 代码展示(C++)123456789101112131415161718192021222324252627282930313233343536373839404142434445// Runtime: 29 msclass MinStack &#123;private: stack&lt;int&gt; st, minSt; public: /** initialize your data structure here. */ MinStack() &#123; &#125; void push(int x) &#123; st.push(x); if (minSt.empty() || x &lt;= minSt.top()) minSt.push(x); &#125; void pop() &#123; if (st.empty()) return; if (st.top() == minSt.top()) minSt.pop(); st.pop(); &#125; int top() &#123; if (st.empty()) return -1; return st.top(); &#125; int getMin() &#123; if (st.empty()) return -1; return minSt.top(); &#125;&#125;;/** * Your MinStack object will be instantiated and called as such: * MinStack obj = new MinStack(); * obj.push(x); * obj.pop(); * int param_3 = obj.top(); * int param_4 = obj.getMin(); */]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode96. Unique Binary Search Trees(Medium)]]></title>
+    <url>%2F2018%2F02%2F28%2FLeetCode96%2F</url>
+    <content type="text"><![CDATA[问题描述 Given n, how many structurally unique BST’s (binary search trees) that store values 1…n? For example, 解题思路 给定数值，确定有多少种形式的二叉搜索树。 还是动态规划来解题，首先需要确定递推公式。以n=3时为例(dp[i]代表n=i时的树的数量): 1是根节点时，左子树是0个，右子树是2,3(2个)，所以此时的树的数量为dp[0]*dp[2]; 2是根节点时，左子树是1(1个)，右子树是3(1个)，所以此时树的数量为dp[1]*dp[1]; 3是根节点时，左子树是2,3(2个)，右子树是0个，所以此时树的数量为dp[2]*dp[0]; 也就是dp[3] = dp[0]*dp[2] + dp[1]*dp[1] + dp[2]*dp[0]，依次递推即可。 代码展示(C++)123456789101112131415// Runtime: 2 msclass Solution &#123;public: int numTrees(int n) &#123; vector&lt;int&gt; dp(n+1, 0); dp[0] = 1; dp[1] = 1; for (int i = 2; i &lt;= n; i++)&#123; for (int j = 0; j &lt; i; j++)&#123; dp[i] += dp[j]*dp[i-j-1]; &#125; &#125; return dp[n]; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode117. Populating Next Right Pointers in Each Node II]]></title>
+    <url>%2F2018%2F02%2F28%2FLeetCode117%2F</url>
+    <content type="text"><![CDATA[问题描述 Follow up for problem “Populating Next Right Pointers in Each Node”. What if the given tree could be any binary tree? Would your previous solution still work? Note: You may only use constant extra space. For example, 解题思路 是116题的进阶版，对于这题，给的二叉树不一定是完全的，所以116题的解法在该题并不适用。 使用BFS来解决，需要用到一个queue来保存中间遍历节点。 对于不同层，在进入队列的时候进行计数，按计数来确定分层，并且在计数的末尾出队列的节点指向NULL。每个节点在出队列时候判断是否存在子节点，若存在，下一层计数加一，并且将其子节点进入队列。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435363738394041424344// Runtime: 27 ms/** * Definition for binary tree with next pointer. * struct TreeLinkNode &#123; * int val; * TreeLinkNode *left, *right, *next; * TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125; * &#125;; */class Solution &#123; queue&lt;TreeLinkNode*&gt; nodeQueue; int count; public: void connect(TreeLinkNode *root) &#123; if (!root) return; nodeQueue.push(root); count = 1; while (!nodeQueue.empty()) &#123; int levelCount = 0; for (int i = 0; i &lt; count; i++)&#123; TreeLinkNode* tmp = nodeQueue.front(); nodeQueue.pop(); if (i == count-1) tmp-&gt;next = NULL; else tmp-&gt;next = nodeQueue.front(); if (tmp-&gt;left)&#123; nodeQueue.push(tmp-&gt;left); levelCount++; &#125; if (tmp-&gt;right)&#123; nodeQueue.push(tmp-&gt;right); levelCount++; &#125; &#125; count = levelCount; &#125; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[LeetCode687. Longest Univalue Path(Easy)]]></title>
     <url>%2F2018%2F02%2F27%2FLeetCode687%2F</url>
     <content type="text"><![CDATA[问题描述 Given a binary tree, find the length of the longest path where each node in the path has the same value. This path may or may not pass through the root. Note: The length of path between two nodes is represented by the number of edges between them. Example 1: Example 2: Note: The given binary tree has not more than 10000 nodes. The height of the tree is not more than 1000. 解题思路 题目要求找到一条最长路径，在该路径上，所有节点值相同。 使用递归的方法很好解决，返回单独子树的最大长度，然后自己比较根节点与左右子树节点的值即可。 注意是路径，分叉的情况不须考虑。 代码展示(C++)123456789101112131415161718192021222324252627282930313233343536// Runtime: 66 ms 51.29%/** * Definition for a binary tree node. * struct TreeNode &#123; * int val; * TreeNode *left; * TreeNode *right; * TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125; * &#125;; */class Solution &#123;private: int ans; public: int longestUnivaluePath(TreeNode* root) &#123; DFS(root); return ans; &#125; int DFS(TreeNode* node)&#123; if (!node) return 0; int left = 0; int right = 0; int leftCount = DFS(node-&gt;left); int rightCount = DFS(node-&gt;right); if (node-&gt;left &amp;&amp; node-&gt;val == node-&gt;left-&gt;val) left = leftCount + 1; if (node-&gt;right &amp;&amp; node-&gt;val == node-&gt;right-&gt;val) right = rightCount + 1; ans = max(ans, left+right); return max(left, right); &#125;&#125;;]]></content>
