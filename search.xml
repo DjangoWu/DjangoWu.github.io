@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[LeetCode125. Valid Palindrome(Easy)]]></title>
+    <url>%2F2018%2F03%2F01%2FLeetCode125%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases. For example,“A man, a plan, a canal: Panama” is a palindrome.“race a car” is not a palindrome. Note:Have you consider that the string might be empty? This is a good question to ask during an interview. For the purpose of this problem, we define empty string as valid palindrome. 解题思路 给定一个字符串，确定是否palindrome(回文)。 字符串处理，两边往中间逼近，过滤掉非字母因素即可。 注意大小写互通，并且数字也需要考虑。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435363738// Runtime: 10 msclass Solution &#123;public: bool isPalindrome(string s) &#123; if (s.length() &lt;= 1) return true; int start = 0, end = s.length() - 1; while (!testChar(s[start])) start++; while (!testChar(s[end])) end--; while (start &lt;= end) &#123; if (tolower(s[start]) == tolower(s[end]))&#123; start++; end--; &#125; else return false; while (!testChar(s[start])) start++; while (!testChar(s[end])) end--; &#125; return true; &#125; bool testChar(char tmp) &#123; if (tmp &gt;= 'A' &amp;&amp; tmp &lt;= 'Z') return true; else if (tmp &gt;= 'a' &amp;&amp; tmp &lt;= 'z') return true; else if (tmp &gt;= '0' &amp;&amp; tmp &lt;= '9') return true; else return false; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode227. Basic Calculator II(Medium)]]></title>
+    <url>%2F2018%2F03%2F01%2FLeetCode227%2F</url>
+    <content type="text"><![CDATA[问题描述 Implement a basic calculator to evaluate a simple expression string. The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero. You may assume that the given expression is always valid. Some examples:“3+2*2” = 7“ 3/2 “ = 1“ 3+5 / 2 “ = 5Note: Do not use the eval built-in library function. 解题思路 给定一个字符串表达式，计算出最终结果，表达式中只包含了非负整数、操作符以及空格，对于除号，向下取整。 最开始打算使用两个栈，分别存储数字和操作符，第一次遍历先计算乘除，第二遍计算加减。 后面查阅资料发现对于加减可以用数值的正负来表示，就可以省去存储操作符的栈了。 代码展示(C++)123456789101112131415161718192021222324252627282930313233// Runtime: 13 msclass Solution &#123;public: int calculate(string s) &#123; if (s.length() == 0) return 0; int num = 0, res = 0; stack&lt;int&gt; st; char op = '+'; for (int i = 0; i &lt; s.length(); i++)&#123; char c = s[i]; if (isdigit(c)) num = num * 10 + c - '0'; if (i == s.length() - 1 || (!isdigit(c) &amp;&amp; c != ' '))&#123; if (op == '+') st.push(num); if (op == '-') st.push(-num); if (op == '*') st.top() *= num; if (op == '/') st.top() /= num; num = 0; op = c; &#125; &#125; while (!st.empty())&#123; res += st.top(); st.pop(); &#125; return res; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode215. Kth Largest Element in an Array(Medium)]]></title>
+    <url>%2F2018%2F03%2F01%2FLeetCode215%2F</url>
+    <content type="text"><![CDATA[问题描述 Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.For example,Given [3,2,1,5,6,4] and k = 2, return 5. Note:You may assume k is always valid, 1 ≤ k ≤ array’s length. 解题思路 在数组中寻找第k大的数。 最开始只是尝试性的使用sort函数排序，然后找到第k大的数直接输出，没想到直接AC了。这种方法的时间复杂度是O(nlogn)。 另外一种算法是使用quick-select算法，也就是快速排序的的partition，时间复杂度是O(n)：使用分治法每次将数组划分为两段，并且返回划分点的位置，如果这个位置恰好是我们要的第k大的数，那么返回这个数即可，否则如果返回的位置小于要找的位置，则向右边的一半数组继续寻找；如果返回的位置大于要找的位置，则向左边寻找。 代码展示(C++)1234567891011121314151617181920212223242526272829// Runtime: 11 msclass Solution &#123;public: int findKthLargest(vector&lt;int&gt;&amp; nums, int k) &#123; sort(nums.begin(), nums.end()); return nums[nums.size() - k]; &#125;&#125;;// Runtime: 44msclass Solution &#123;public: int findKthLargest(vector&lt;int&gt;&amp; nums, int k) &#123; int len = nums.size(); int left = 0, right = len - 1, ans, pos = len - k; while ((ans = partition(nums, left, right)) != pos) ans&lt;pos?left = ans + 1: right = ans - 1; return nums[len - k]; &#125; int partition(vector&lt;int&gt;&amp; nums, int left, int right)&#123; int val = nums[right]; for (int i = left; i &lt; right; i++) if (nums[i] &lt; val) swap(nums[left++], nums[i]); swap(nums[right], nums[left]); return left; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[LeetCode166. Fraction to Recurring Decimal(Medium)]]></title>
     <url>%2F2018%2F02%2F28%2FLeetCode166%2F</url>
     <content type="text"><![CDATA[问题描述 Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.&gt; If the fractional part is repeating, enclose the repeating part in parentheses. For example, Given numerator = 1, denominator = 2, return “0.5”. Given numerator = 2, denominator = 1, return “2”. Given numerator = 2, denominator = 3, return “0.(6)”. 解题思路 给定两个整数，表示一个分数的分子和分母，最后以字符串形式返回这个分数，若分数是重复的，将重复部分用括号括起来。 分类讨论： 如果可以直接除尽，直接返回。 如果不能直接除尽，则先取整数，再计算小数，计算小数部分时就说每次取商，又可分为能除尽和循环小数两种情况： 若能除尽时最后可以直接返回结果 对于循环小数，需要将每次的被除数和当前商的位置用一个hash表保存起来，这样当再次发现相同的被除数时就说明出现了循环，那么在第一次出现这个被除数的商的位置加括号即可。 在运算时候注意符号问题和越界问题(以long类型存储) 代码展示(C++)123456789101112131415161718192021222324252627// Runtime: 3 msclass Solution &#123;public: string fractionToDecimal(int numerator, int denominator) &#123; if (numerator == 0) return "0"; long num1 = fabs(numerator), num2 = fabs(denominator); bool flag = (numerator&gt;0 ^ denominator&gt;0) ? true : false; string ans = (flag ? "-" : "") + to_string(num1 / num2); if (num1 % num2 == 0) return ans; num1 = num1 % num2; ans += "."; unordered_map&lt;int, int&gt; hash; while (!hash.count(num1)) &#123; hash[num1] = ans.size(); num1 *= 10; ans += to_string(num1 / num2); if (num1 % num2 == 0) return ans; num1 = num1 % num2; &#125; ans.insert(hash[num1], 1, '('); ans += ")"; return ans; &#125;&#125;;]]></content>
