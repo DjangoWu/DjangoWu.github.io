@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[LeetCode397. Integer Replacement(Medium)]]></title>
+    <url>%2F2018%2F03%2F06%2FLeetCode397%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a positive integer n and you can do operations as follow: If n is even, replace n with n/2.If n is odd, you can replace n with either n + 1 or n - 1.What is the minimum number of replacements needed for n to become 1? Example 1: Example 2: 题意：给定一个int整数，对于奇数，可使其加1或者减1；对于偶数，使其除2，找出最少的变换次数使其能变为1。 解题思路 最先想到的是使用动态规划dp算法，递推式为：奇数时dp[i] = min(dp[(i+1)/2], dp[(i-1)/2]) + 2；偶数时dp[i] = dp[i/2] + 1。但是会Memory Limit Exceeded。 dp算法会超出内存限制，那么可以使用递归算法，代码在下面，很好理解。 代码展示(C++)1234567891011121314151617// 递归算法// Runtime: 4 msclass Solution &#123;public: int integerReplacement(int n) &#123; return (int)longReplacement(n); &#125; long longReplacement(long n) &#123; if (n &lt; 3) return n - 1; if (n % 2 == 0) return longReplacement(n/2) + 1; else return min(longReplacement((n-1)/2), longReplacement((n+1)/2)) + 2; &#125;&#125;; 12345678910111213141516171819202122// DP算法：Memory Limit Exceededclass Solution &#123;public: int integerReplacement(int n) &#123; vector&lt;int&gt; dp(n+3, 0); dp[0] = 0; dp[1] = 0; // 为偶数项计算初始值 for (int i = 2; i &lt;= n; i++)&#123; if (i % 2 == 0)&#123; dp[i] = dp[i/2] + 1; dp[i+2] = dp[i/2+1] + 1; &#125; else if (i % 2 != 0) &#123; dp[i] = min(dp[i-1], dp[i+1]) + 1; &#125; &#125; return dp[n]; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode34. Search for a Range(Medium)]]></title>
+    <url>%2F2018%2F03%2F06%2FLeetCode34%2F</url>
+    <content type="text"><![CDATA[问题描述 Given an array of integers sorted in ascending order, find the starting and ending position of a given target value. Your algorithm’s runtime complexity must be in the order of O(log n). If the target is not found in the array, return [-1, -1]. For example,Given [5, 7, 7, 8, 8, 10] and target value 8,return [3, 4]. 题意：给定一个排好序的数组和一个目标值，求出目标值在数组中的区域，若不存在返回[-1, -1]。 解题思路 要求时间复杂度为O(log n)，使用二分查找法，分两次查找，一次查上界，一次查下界。 关于二分查找，这个博客讲的很详细。 代码展示(C++)123456789101112131415161718192021222324252627282930313233343536// Runtime: 10 msclass Solution &#123;public: vector&lt;int&gt; searchRange(vector&lt;int&gt;&amp; nums, int target) &#123; vector&lt;int&gt; ans(2, -1); int right = searchRight(nums, 0, nums.size()-1, target); printf("right = %d\n", right); if (right &lt; 0 || nums[right] != target) return ans; ans[0] = searchLeft(nums, 0, right, target); ans[1] = right; return ans; &#125; int searchLeft(vector&lt;int&gt;&amp; nums, int left, int right, int target)&#123; while (left &lt;= right) &#123; int mid = (left + right) &gt;&gt; 1; if (nums[mid] &lt; target) left = mid + 1; else right = mid - 1; &#125; return left; &#125; int searchRight(vector&lt;int&gt;&amp; nums, int left, int right, int target)&#123; while (left &lt;= right) &#123; int mid = (left + right) &gt;&gt; 1; if (nums[mid] &gt; target) right = mid - 1; else left = mid + 1; &#125; return right; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode27. Remove Element(Easy)]]></title>
+    <url>%2F2018%2F03%2F06%2FLeetCode27%2F</url>
+    <content type="text"><![CDATA[问题描述 Given an array and a value, remove all instances of that value in-place and return the new length. Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory. The order of elements can be changed. It doesn’t matter what you leave beyond the new length. Example: Given nums = [3,2,2,3], val = 3, Your function should return length = 2, with the first two elements of nums being 2. 题意：给定数组移除指定value，返回最终数组长度。 解题思路 题目要求不能建立新的数组，所以只能在原始数组上入手。 使用两个游标p1、p2，使用p2遍历数组，如果遇到val，则继续直到下一个非val数值出现，此时将p2对应的值赋值到p1对应的位置上，p1自增。 代码展示(C++)1234567891011121314// Runtime: 7 msclass Solution &#123;public: int removeElement(vector&lt;int&gt;&amp; nums, int val) &#123; int p1 = 0, p2 = 0; for (; p2 &lt; nums.size(); p2++) &#123; if (nums[p2] == val) continue; nums[p1] = nums[p2]; p1++; &#125; return p1; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode5. Longest Palindromic Substring(Medium)]]></title>
+    <url>%2F2018%2F03%2F06%2FLeetCode5%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example: Input: “babad” Output: “bab” Note: “aba” is also a valid answer. Example: Input: “cbbd” Output: “bb” 题意：求给定字符串的最长回文子串。 解题思路 最开始想到的是暴力算法，但是时间复杂度过高，遂放弃。 查阅资料发现有动态规划算法(O(n^2))以及Manacher算法(O(n))。 参考资料：(1), (2) 代码展示(C++)123456789101112131415161718192021222324252627282930313233// Runtime: 7 msclass Solution &#123;public: string longestPalindrome(string s) &#123; // padding string string ps = "$#"; for (char c : s)&#123; ps += c; ps += '#'; &#125; ps += '\0'; vector&lt;int&gt; dp(ps.size()); int id = 0, mx = 0; int start = 0, maxLen = 0; for (int i = 1; i &lt; ps.size(); i++)&#123; dp[i] = mx &gt; i ? min(dp[2*id-i], mx-i) : 1; while (ps[i+dp[i]] == ps[i-dp[i]]) dp[i]++; if (i + dp[i] &gt; mx) &#123; id = i; mx = i + dp[i]; &#125; //record the longest Palindromic substring if (dp[i] - 1 &gt; maxLen)&#123; start = (i - dp[i]) / 2; maxLen = dp[i] - 1; &#125; &#125; return s.substr(start, maxLen); &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode172. Factorial Trailing Zeroes(Easy)]]></title>
+    <url>%2F2018%2F03%2F06%2FLeetCode172%2F</url>
+    <content type="text"><![CDATA[问题描述 Given an integer n, return the number of trailing zeroes in n!. Note: Your solution should be in logarithmic time complexity. 题意：给定整数n，确定其n!结果有多少个0。 解题思路 每一个0都是2*5的结果，因为不管多少阶乘，5的个数总比2的少，所以只需判断从0到n中共包含多少个5即可：10(2*5), 25(5*5)… 只需让n不断除以5即可得出答案。 代码展示(C++, Python)123456789101112// Runtime: 4 msclass Solution &#123;public: int trailingZeroes(int n) &#123; int num = 0; while (n &gt; 0) &#123; num += n / 5; n /= 5; &#125; return num; &#125;&#125;; 123456789101112# Runtime: 34 msclass Solution(object): def trailingZeroes(self, n): """ :type n: int :rtype: int """ num = 0 while n &gt; 0: num = num + n / 5 n = n / 5 return num]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[LeetCode161. Maximal Square(Medium)]]></title>
+    <url>%2F2018%2F03%2F06%2FLeetCode161%2F</url>
+    <content type="text"><![CDATA[问题描述 Given a 2D binary matrix filled with 0’s and 1’s, find the largest square containing only 1’s and return its area. For example, given the following matrix: 1 0 1 0 01 0 1 1 11 1 1 1 11 0 0 1 0Return 4. 题意：给定一个2D矩阵(只有0和1)，找出最大的仅包含1的矩阵并返回其面积。 解题思路 使用动态规划(DP)算法，dp[i][j]表示在该点的正边形边长，遍历矩阵，若当前位置的数值为0，则dp[i][j]=0，如果为1，则根据递推式推导。 递推式：dp[i][j] = min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1 代码展示(C++)12345678910111213141516171819202122232425262728293031323334// Runtime: 22 msclass Solution &#123;public: int maximalSquare(vector&lt;vector&lt;char&gt;&gt;&amp; matrix) &#123; if (matrix.size() == 0) return 0; int row = matrix.size(); int col = matrix[0].size(); int maxSqu = 0; vector&lt;vector&lt;int&gt;&gt; dp(row, vector&lt;int&gt;(col, 0)); // 第一行赋值 for (int i = 0; i &lt; col; i++)&#123; dp[0][i] = matrix[0][i] - '0'; maxSqu = max(maxSqu, dp[0][i]); &#125; // 第一列赋值 for (int i = 0; i &lt; row; i++)&#123; dp[i][0] = matrix[i][0] - '0'; maxSqu = max (maxSqu, dp[i][0]); &#125; // 递推 for (int i = 1; i &lt; row; i++)&#123; for (int j = 1; j &lt; col; j++)&#123; if (matrix[i][j] == '1') dp[i][j] = min(min(dp[i-1][j-1], dp[i-1][j]), dp[i][j-1])+1; else dp[i][j] = 0; maxSqu = max(maxSqu, dp[i][j]); &#125; &#125; return maxSqu * maxSqu; &#125;&#125;;]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[LeetCode125. Valid Palindrome(Easy)]]></title>
     <url>%2F2018%2F03%2F01%2FLeetCode125%2F</url>
     <content type="text"><![CDATA[问题描述 Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases. For example,“A man, a plan, a canal: Panama” is a palindrome.“race a car” is not a palindrome. Note:Have you consider that the string might be empty? This is a good question to ask during an interview. For the purpose of this problem, we define empty string as valid palindrome. 解题思路 给定一个字符串，确定是否palindrome(回文)。 字符串处理，两边往中间逼近，过滤掉非字母因素即可。 注意大小写互通，并且数字也需要考虑。 代码展示(C++)1234567891011121314151617181920212223242526272829303132333435363738// Runtime: 10 msclass Solution &#123;public: bool isPalindrome(string s) &#123; if (s.length() &lt;= 1) return true; int start = 0, end = s.length() - 1; while (!testChar(s[start])) start++; while (!testChar(s[end])) end--; while (start &lt;= end) &#123; if (tolower(s[start]) == tolower(s[end]))&#123; start++; end--; &#125; else return false; while (!testChar(s[start])) start++; while (!testChar(s[end])) end--; &#125; return true; &#125; bool testChar(char tmp) &#123; if (tmp &gt;= 'A' &amp;&amp; tmp &lt;= 'Z') return true; else if (tmp &gt;= 'a' &amp;&amp; tmp &lt;= 'z') return true; else if (tmp &gt;= '0' &amp;&amp; tmp &lt;= '9') return true; else return false; &#125;&#125;;]]></content>
