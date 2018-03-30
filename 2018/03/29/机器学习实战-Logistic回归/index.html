@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="John Wu, Hexo, NexT" />
+  <meta name="keywords" content="Machine Learning,Python," />
 
 
 
@@ -86,13 +86,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="静默无声">
-<meta property="og:url" content="http://johnwu.top/categories/电影/index.html">
+<meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });       机器学习–Logistic回归计算过程的推导这篇博客讲的超赞，很详细，书里面略去了很多细节，比如一些中间项的推导  利用Logistic 回归进行分类的主要思想是：根据现有数据对分类边界线建立回归公式，依此进行分类回归一词源自拟合，表示">
+<meta name="keywords" content="Machine Learning,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习实战-Logistic回归">
+<meta property="og:url" content="http://johnwu.top/2018/03/29/机器学习实战-Logistic回归/index.html">
 <meta property="og:site_name" content="静默无声">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });       机器学习–Logistic回归计算过程的推导这篇博客讲的超赞，很详细，书里面略去了很多细节，比如一些中间项的推导  利用Logistic 回归进行分类的主要思想是：根据现有数据对分类边界线建立回归公式，依此进行分类回归一词源自拟合，表示">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-30T04:40:20.461Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="静默无声">
+<meta name="twitter:title" content="机器学习实战-Logistic回归">
+<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&apos;$&apos;,&apos;$&apos;], [&apos;\\(&apos;,&apos;\\)&apos;]]} });       机器学习–Logistic回归计算过程的推导这篇博客讲的超赞，很详细，书里面略去了很多细节，比如一些中间项的推导  利用Logistic 回归进行分类的主要思想是：根据现有数据对分类边界线建立回归公式，依此进行分类回归一词源自拟合，表示">
 
 
 
@@ -122,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://johnwu.top/categories/电影/"/>
+  <link rel="canonical" href="http://johnwu.top/2018/03/29/机器学习实战-Logistic回归/"/>
 
 
 
 
 
-  <title>分类: 电影 | 静默无声</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>机器学习实战-Logistic回归 | 静默无声</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -147,7 +152,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -295,55 +300,327 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>电影<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwu.top/2018/03/29/机器学习实战-Logistic回归/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="静默无声">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/01/20/让子弹飞一会儿/" itemprop="url">
-              
-                <span itemprop="name">让子弹飞一会儿</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">机器学习实战-Logistic回归</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-20T14:42:51+08:00"
-              content="2018-01-20" >
-          01-20
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T23:44:18+08:00">
+                2018-03-29
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-03-30T12:40:20+08:00">
+                2018-03-30
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/29/机器学习实战-Logistic回归/" class="leancloud_visitors" data-flag-title="机器学习实战-Logistic回归">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,076
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+<blockquote>
+<p><a href="https://blog.csdn.net/ligang_csdn/article/details/53838743" target="_blank" rel="noopener">机器学习–Logistic回归计算过程的推导</a><br>这篇博客讲的超赞，很详细，书里面略去了很多细节，比如一些中间项的推导</p>
+</blockquote>
+<p>利用Logistic 回归进行分类的主要思想是：<strong>根据现有数据对分类边界线建立回归公式，依此进行分类</strong><br>回归一词源自拟合，表示要找到最佳拟合参数集。</p>
+<h3 id="一般流程"><a href="#一般流程" class="headerlink" title="一般流程"></a>一般流程</h3><blockquote>
+<ol>
+<li>收集数据： 可采用任何方法 </li>
+<li>准备数据： 由于需要进行距离计算，因此要求数据类型为数值型。另外，结构化数据格式则最佳。</li>
+<li>分析数据： 采用任意方法对数据进行分析</li>
+<li>训练算法： 大部分时间将用于训练，训练的目的是为了找到最佳的分类回归系数。</li>
+<li>测试数据： 一旦训练步骤完成，分类将会很快</li>
+<li>使用算法： 首先，我们需要输入一些数据，并将其转换成对应的结构化数值，判定它们属于哪个类别；在这之后，我们就可以在输出的类别上做一些其他分析工作。</li>
+</ol>
+</blockquote>
+<h3 id="采用Logistic回归和Sigmoid函数的分类"><a href="#采用Logistic回归和Sigmoid函数的分类" class="headerlink" title="采用Logistic回归和Sigmoid函数的分类"></a>采用Logistic回归和Sigmoid函数的分类</h3><p><strong>优点</strong>： 计算代价不高，易于理解和实现<br><strong>缺点</strong>： 容易欠拟合，分类精度可能不高<br><strong>使用数据范围</strong>： 数值型和标称型数据。</p>
+<p>Sigmoid函数的输入记为z，则<br>$$z=w_0x_0+w_1x_1+w_2x_2+…+w_nx_n = w^Tx$$</p>
+<p><strong>梯度上升法</strong>(具体推导过程见文章开头链接)<br>$$w := w + \alpha\nabla_wf(w)$$</p>
+<blockquote>
+<p><strong>梯度下降算法</strong><br>梯度下降算法与这里的梯度上升算法是一样的，只是公式中的加法需要变成减法：<br>$$w := w - \alpha\nabla_wf(w)$$<br><strong>梯度上升算法用来求函数的最大值，而梯度下降算法用来求函数的最小值</strong></p>
+</blockquote>
+<h4 id="python代码实现"><a href="#python代码实现" class="headerlink" title="python代码实现"></a>python代码实现</h4><ol>
+<li><p><strong>梯度上升算法</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(inX)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span> / (<span class="number">1</span> + exp(-inX))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradAscent</span><span class="params">(dataMatIn, classLabels)</span>:</span></span><br><span class="line">    <span class="string">"Logistic 回归梯度上升优化"</span></span><br><span class="line">    dataMatrix = mat(dataMatIn)</span><br><span class="line">    labelMat = mat(classLabels).transpose()</span><br><span class="line">    m, n = shape(dataMatrix)</span><br><span class="line">    alpha = <span class="number">0.001</span></span><br><span class="line">    maxCycles = <span class="number">500</span></span><br><span class="line">    weights = ones((n, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(maxCycles):</span><br><span class="line">        h = sigmoid(dataMatrix * weights)</span><br><span class="line">        error = (labelMat - h)</span><br><span class="line">        weights = weights + alpha * dataMatrix.transpose() * error</span><br><span class="line">    <span class="keyword">return</span> weights</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>随机梯度上升</strong><br>一次仅用一个样本点来更新回归系数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪代码</span></span><br><span class="line">所有回归系数初始化为<span class="number">1</span></span><br><span class="line">对数据集中每个样本</span><br><span class="line">	计算该样本的梯度</span><br><span class="line">	使用alpha * gradient更新回归系数值</span><br><span class="line">返回回归系数值</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stocGradAscent0</span><span class="params">(dataMatrix, classLabels)</span>:</span></span><br><span class="line">    m,n = shape(dataMatrix)</span><br><span class="line">    alpha = <span class="number">0.01</span></span><br><span class="line">    weights = ones(n)   <span class="comment">#initialize to all ones</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(m):</span><br><span class="line">        h = sigmoid(sum(dataMatrix[i]*weights))</span><br><span class="line">        error = classLabels[i] - h</span><br><span class="line">        weights = weights + alpha * error * dataMatrix[i]</span><br><span class="line">    <span class="keyword">return</span> weights</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>改进的随机梯度上升算法</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stocGradAscent1</span><span class="params">(dataMatrix, classLabels, numIter=<span class="number">150</span>)</span>:</span></span><br><span class="line">    m, n = shape(dataMatrix)</span><br><span class="line">    weights = ones(n)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(numIter):</span><br><span class="line">        dataIndex = list(range(m))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):</span><br><span class="line">            alpha = <span class="number">4</span>/(<span class="number">1.0</span>+j+i)+<span class="number">0.01</span>        <span class="comment"># alpha每次迭代时需要调整</span></span><br><span class="line">            randIndex = int(random.uniform(<span class="number">0</span>, len(dataIndex)))      <span class="comment"># 随机选取更新</span></span><br><span class="line">            h = sigmoid(sum(dataMatrix[randIndex]*weights))</span><br><span class="line">            error = classLabels[randIndex] - h</span><br><span class="line">            weights = weights + alpha * error * dataMatrix[randIndex]</span><br><span class="line">            <span class="keyword">del</span>(dataIndex[randIndex])</span><br><span class="line">    <span class="keyword">return</span> weights</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>两处改动:</p>
+<blockquote>
+<ul>
+<li>alpha在每次迭代的时候都会调整，这可以缓解数据波动或者高频波动。虽然aplha会随着迭代次数不断减小，但永远不会减小到0，因为其中存在常数项。这样做的原因是为了保证在多次迭代之后新数据仍然具有一定的影响。如果要处理的问题是动态变化的，那么可以适当加大上述常数项，来确保新的值获得更大的回归系数。还有一点就是这样选择的alpha不是严格下降的。(避免参数的严格下降也常见于模拟退火算法等其他优化算法中)</li>
+<li>通过随机选取样本来更新回归系数，这种方法将减少周期性的波动。</li>
+</ul>
+</blockquote>
+<h3 id="处理数据中的缺失值"><a href="#处理数据中的缺失值" class="headerlink" title="处理数据中的缺失值"></a>处理数据中的缺失值</h3><blockquote>
+<ul>
+<li>使用可用特征的均值来填补缺失值</li>
+<li>使用特殊值来填补缺失值，如-1</li>
+<li>忽略有缺失值的样本</li>
+<li>使用相似样本的均值添补缺失值</li>
+<li>使用另外的机器学习算法预测缺失值</li>
+</ul>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="John Wu 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="John Wu 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    John Wu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://johnwu.top/2018/03/29/机器学习实战-Logistic回归/" title="机器学习实战-Logistic回归">http://johnwu.top/2018/03/29/机器学习实战-Logistic回归/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/27/机器学习实战读书笔记/" rel="next" title="机器学习实战读书笔记">
+                <i class="fa fa-chevron-left"></i> 机器学习实战读书笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -351,6 +628,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjk3Mi85NTM0"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -371,8 +657,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -436,6 +731,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一般流程"><span class="nav-number">1.</span> <span class="nav-text">一般流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#采用Logistic回归和Sigmoid函数的分类"><span class="nav-number">2.</span> <span class="nav-text">采用Logistic回归和Sigmoid函数的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python代码实现"><span class="nav-number">2.1.</span> <span class="nav-text">python代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理数据中的缺失值"><span class="nav-number">3.</span> <span class="nav-text">处理数据中的缺失值</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -592,6 +903,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -620,6 +935,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
